@@ -25,11 +25,11 @@ $.fn.gal=function(options){
     var gal_buttons=$('div.gal_scene').find("div");
     
     gal_list=$("ul#gal_list");
-    $("ul#gal_list div").on("click",function(){
-      console.log("remove");
-
-      
-      });
+    //$("ul#gal_list li").on("click",function(){
+    //  console.log("remove");
+    //
+    //  
+    //  }); 
 
   console.log($("ul#gal_list"));
    
@@ -51,12 +51,20 @@ $.fn.gal=function(options){
                                   var imgName=$(this).parent().children(".gal_img").attr("src");
                                   console.log(imgName);
                                   var li=$("<li></li>");
-                                  var button=$("<div />");
+                                  var button=$("<button />").css({"border":"1px solid #111111", "width":"10px"}).on("click",function(){
+                                    $(this).parent().animate({"opacity":"0","width":"0px"},500,function(){$(this).remove()});
+                                    
+                                    
+ //                                   fadeTo(500,0,function(){$(this).remove()})
+                                  
+                                });
                                   button.html("-");
                                   li.html(imgName);
-                                  gal_list.append(li).append(button);
+                                  li.append(button);
+                                  
+                                  gal_list.append(li);
                                   gal_close.trigger("click");
-                                                console.log("LET DROP");
+                                               // console.log("LET DROP");
                       }
 
                     
