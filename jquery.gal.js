@@ -23,6 +23,38 @@ $.fn.gal=function(options){
     var gal_left=$("<img />").attr({"src":"img/gal_left.png","width":"10px","class":"gal_left"});
     var gal_right=$("<img />").attr({"src":"img/gal_right.png","width":"10px","class":"gal_right"});
     var gal_buttons=$('div.gal_scene').find("div");
+    
+    var gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
+
+                  
+                  $(this).data("msdown",true).data( "position",{"X":e.pageX,"Y":e.pageY});
+                  console.log("mouse down");
+                  }).on("mouseup",function(){
+                    $(this).data("msdown",false);
+        
+                  });
+    
+    $("body").on("mousemove",function(e){
+                  
+                  if (gal_enlarged_top.data("msdown")) {
+                        console.log(e);
+                        console.log(gal_enlarged_top.data("msdown"));
+                        console.log(gal_enlarged_top.data("position"))
+                          var dX=e.pageX-gal_enlarged_top.data("position").X;
+                          var dY=e.pageY-gal_enlarged_top.data("position").Y;
+                          console.log(dX,dY);
+                          gal_enlarged_top.data("position",{"X":e.pageX,"Y":e.pageY});
+                          $(".gal_enlarged").css({"left":"+="+dX,"top":"+="+dY});
+  
+                  }
+                  
+                   
+                  e.stopPropagation();
+                  e.bubbles=false;
+                  
+                  })
+    
+    
     var nrOfButtons=gal_buttons.length;
     var width=parseInt(gal_scene.css("width"));
     var heightButton=parseInt($(gal_buttons[0]).css("height"));
@@ -76,7 +108,7 @@ $.fn.gal=function(options){
                 "left":5+"px",
                 "top":5+"px"
                 
-                },opt.openProp.speed,function(){ $(this).html(html).fadeTo(0,0).fadeTo(500,1).prepend(gal_left).on("click",function(e){
+                },opt.openProp.speed,function(){ $(this).html(html).fadeTo(0,0).fadeTo(500,1).prepend(gal_enlarged_top).prepend(gal_left).on("click",function(e){
                                         
                     if ( !$(e.target).hasClass("gal_left") ) {
                         return;
@@ -135,7 +167,7 @@ $.fn.gal=function(options){
                                 //    }   
                 
                                 e.bubbles=false;
-                                $(this).fadeOut(500).remove();
+                                $(this).fadeOut(500).detach();
                                 self.fadeTo(500,1);
                                 open=false;
                 
