@@ -10,8 +10,8 @@ $.fn.gal=function(options){
   libs.deepExt.apply(opt,[$.fn.gal.defaults]);
   libs.deepExt.apply(opt,[options]);
   
-  console.log(options);  
-  console.log(opt);
+  //console.log(options);  
+  //console.log(opt);
 
   
     var gal_scene=this;
@@ -25,7 +25,15 @@ $.fn.gal=function(options){
     var gal_buttons=$('div.gal_scene').find("div");
     
     gal_list=$("ul#gal_list");
-console.log(gal_list.offset());
+    $("ul#gal_list div").on("click",function(){
+      console.log("remove");
+
+      
+      });
+
+  console.log($("ul#gal_list"));
+   
+      
     
     var gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
 
@@ -40,6 +48,14 @@ console.log(gal_list.offset());
                           e.pageY>=gal_list.offset().top &&  e.pageY<=gal_list.offset().top+ parseInt(gal_list.css("height"))
                           
                           ) {
+                                  var imgName=$(this).parent().children(".gal_img").attr("src");
+                                  console.log(imgName);
+                                  var li=$("<li></li>");
+                                  var button=$("<div />");
+                                  button.html("-");
+                                  li.html(imgName);
+                                  gal_list.append(li).append(button);
+                                  gal_close.trigger("click");
                                                 console.log("LET DROP");
                       }
 
