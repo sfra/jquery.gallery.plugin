@@ -3,9 +3,11 @@ div.gal_scene{
     width: 800px;
     height: 300px;
     background-color: #333333;
-      -webkit-user-select: none;
-        -moz-user-select: none;
-          -ms-user-select: none; 
+    margin-right: 10px;
+    float: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
     user-select: none;
 }
 
@@ -53,5 +55,16 @@ img.gal_right{
 
 
 .wrapper{
+    
+}
+
+
+
+
+ul#gal_list{
+    border: 1px solid #112233;
+    width: 200px;
+    float: left;
+    
     
 }

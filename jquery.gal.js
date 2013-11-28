@@ -24,25 +24,41 @@ $.fn.gal=function(options){
     var gal_right=$("<img />").attr({"src":"img/gal_right.png","width":"10px","class":"gal_right"});
     var gal_buttons=$('div.gal_scene').find("div");
     
+    gal_list=$("ul#gal_list");
+console.log(gal_list.offset());
+    
     var gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
 
                   
                   $(this).data("msdown",true).data( "position",{"X":e.pageX,"Y":e.pageY});
-                  console.log("mouse down");
-                  }).on("mouseup",function(){
+                  //console.log("mouse down");
+                  }).on("mouseup",function(e){
                     $(this).data("msdown",false);
+                    
+                      if ( e.pageX>=gal_list.offset().left &&  e.pageX<=gal_list.offset().left+ parseInt(gal_list.css("width")) &&
+                          
+                          e.pageY>=gal_list.offset().top &&  e.pageY<=gal_list.offset().top+ parseInt(gal_list.css("height"))
+                          
+                          ) {
+                                                console.log("LET DROP");
+                      }
+
+                    
+                    
+                    
+                    
         
                   });
     
     $("body").on("mousemove",function(e){
                   
                   if (gal_enlarged_top.data("msdown")) {
-                        console.log(e);
-                        console.log(gal_enlarged_top.data("msdown"));
-                        console.log(gal_enlarged_top.data("position"))
+                        //console.log(e);
+                        //console.log(gal_enlarged_top.data("msdown"));
+                        //console.log(gal_enlarged_top.data("position"));
                           var dX=e.pageX-gal_enlarged_top.data("position").X;
                           var dY=e.pageY-gal_enlarged_top.data("position").Y;
-                          console.log(dX,dY);
+                          //console.log(dX,dY);
                           gal_enlarged_top.data("position",{"X":e.pageX,"Y":e.pageY});
                           $(".gal_enlarged").css({"left":"+="+dX,"top":"+="+dY});
   
@@ -52,8 +68,11 @@ $.fn.gal=function(options){
                   e.stopPropagation();
                   e.bubbles=false;
                   
-                  })
+                  });
     
+    
+    
+ 
     
     var nrOfButtons=gal_buttons.length;
     var width=parseInt(gal_scene.css("width"));
