@@ -24,6 +24,15 @@ Then in the body of the html file insert, for example:
   </div>
 
 ```
+
+On the other hand put
+
+```html
+<ul id="gal_list">drop an image here</ul>
+```
+for the list where you can drop an enlarged image (which is stored as a name of the file, but it can be easily
+reiplemented). 
+
 To init gallery put in script.js the following command:
 
 
