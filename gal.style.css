@@ -79,5 +79,6 @@ ul#gal_list{
 
 ul#gal_list li{
     width: 100%;
+    border: 1px solid #223344;
     
 }
