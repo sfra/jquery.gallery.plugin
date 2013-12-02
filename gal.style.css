@@ -65,7 +65,15 @@ ul#gal_list{
     border: 1px solid #112233;
     width: 200px;
     float: left;
+    position: relative;
+    left: 0px;
+    top:0px;
     
-    
+}
+
+
+
+ul#gal_list li{
+    width: 100%;
     
 }

@@ -43,7 +43,13 @@ $.fn.gal=function(options){
                   }).on("mouseup",function(e){
                     $(this).data("msdown",false);
                     
-                      if ( e.pageX>=gal_list.offset().left &&  e.pageX<=gal_list.offset().left+ parseInt(gal_list.css("width")) &&
+                      console.log(gal_list.offset());
+                      console.log(parseInt(gal_list.css("width")));
+                      console.log(parseInt(gal_list.css("height")));
+                      console.log(e.pageX);
+                    
+                      if ( e.pageX>=gal_list.offset().left+parseInt(gal_list.css("padding-left")) &&
+                          e.pageX<=gal_list.offset().left+ parseInt(gal_list.css("width"))+parseInt(gal_list.css("padding-left")) &&
                           
                           e.pageY>=gal_list.offset().top &&  e.pageY<=gal_list.offset().top+ parseInt(gal_list.css("height"))
                           
@@ -63,7 +69,23 @@ $.fn.gal=function(options){
                                   li.append(button);
                                   
                                   gal_list.append(li);
-                                  gal_close.trigger("click");
+                                  
+                                  
+                                  console.log(gal_list.css("position"))
+                                  
+                                  $(".gal_enlarged").animate({"left":gal_list.offset().left+"px",
+                                                             "top":gal_list.offset().top+"px",
+                                                             "height":gal_list.css("height"),
+                                                             "width":gal_list.css("width")
+                                                             
+                                                             },function(){
+                                    
+                                          gal_close.trigger("click");                      
+                                    
+                                    });
+                                  
+                                  
+              
                                                // console.log("LET DROP");
                       }
 
