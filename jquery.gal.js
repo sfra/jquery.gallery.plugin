@@ -25,11 +25,7 @@ $.fn.gal=function(options){
     var gal_buttons=$('div.gal_scene').find("div");
     
     gal_list=$("ul#gal_list");
-    //$("ul#gal_list li").on("click",function(){
-    //  console.log("remove");
-    //
-    //  
-    //  }); 
+
 
   console.log($("ul#gal_list"));
    
@@ -40,7 +36,7 @@ $.fn.gal=function(options){
                   
                   $(this).data("msdown",true).data( "position",{"X":e.pageX,"Y":e.pageY});
                   //console.log("mouse down");
-                  }).on("mouseup",function(e){
+                  }).on("mouseup",function(e){ /* when left mouse button is released, remove drag state */
                     $(this).data("msdown",false);
                     
                       console.log(gal_list.offset());
@@ -73,7 +69,7 @@ $.fn.gal=function(options){
                                   
                                   console.log(gal_list.css("position"))
                                   
-                                  $(".gal_enlarged").animate({"left":gal_list.offset().left+"px",
+                                  $(".gal_enlarged").css({"background-color":"transparent"}).animate({"left":gal_list.offset().left+"px",
                                                              "top":gal_list.offset().top+"px",
                                                              "height":gal_list.css("height"),
                                                              "width":gal_list.css("width")
@@ -96,18 +92,13 @@ $.fn.gal=function(options){
         
                   });
     
-    $("body").on("mousemove",function(e){
+    $("body").on("mousemove",function(e){ /* if element is in drag state follow by mouse pointer*/
                   
                   if (gal_enlarged_top.data("msdown")) {
-                        //console.log(e);
-                        //console.log(gal_enlarged_top.data("msdown"));
-                        //console.log(gal_enlarged_top.data("position"));
                           var dX=e.pageX-gal_enlarged_top.data("position").X;
                           var dY=e.pageY-gal_enlarged_top.data("position").Y;
-                          //console.log(dX,dY);
                           gal_enlarged_top.data("position",{"X":e.pageX,"Y":e.pageY});
-                          $(".gal_enlarged").css({"left":"+="+dX,"top":"+="+dY});
-  
+                          $(".gal_enlarged").css({"left":"+="+dX,"top":"+="+dY}); 
                   }
                   
                    
@@ -151,7 +142,7 @@ $.fn.gal=function(options){
     gal_buttons.addClass("gal_button").css({
         "width":widthButton
         
-        }).on("click",function(){
+        }).on("click",function(){ /* enlarge image */
             
             if (open) {
                 return;
@@ -169,11 +160,17 @@ $.fn.gal=function(options){
                 "left": parseInt(gal_scene.css("width"))/2-6+"px"
                 }).appendTo(gal_scene).addClass("gal_enlarged").animate({
                 "width":parseInt(gal_scene.css('width'))-12+"px",
-                "height":100+parseInt(gal_scene.css('height'))-12+"px",
+                "height":   100+parseInt(gal_scene.css('height'))-12+"px",
                 "left":5+"px",
                 "top":5+"px"
                 
-                },opt.openProp.speed,function(){ $(this).html(html).fadeTo(0,0).fadeTo(500,1).prepend(gal_enlarged_top).prepend(gal_left).on("click",function(e){
+                },opt.openProp.speed, function(){ $(this).html(html).fadeTo(0,0).fadeTo(500,1,function(){
+                    
+                  $(this).css({"background-color":"transparent"}).children("img.gal_img").css({"opacity":1});
+                  
+                  //$(this).css({"background-image":"transparent"});
+                  
+                  }).prepend(gal_enlarged_top).prepend(gal_left).on("click",function(e){ /* change to left image*/
                                         
                     if ( !$(e.target).hasClass("gal_left") ) {
                         return;
@@ -195,7 +192,7 @@ $.fn.gal=function(options){
                     self=prev;
 
                     }
-                    }).prepend(gal_right).on("click",function(e){
+                    }).prepend(gal_right).on("click",function(e){ /* change to right image */
                      
                     
                         if ( !$(e.target).hasClass("gal_right") ) {
@@ -220,16 +217,13 @@ $.fn.gal=function(options){
                      
                      
 
-                    }).prepend(gal_close).on("click",
+                    }).prepend(gal_close).on("click", /* close image */
                                 function(e){
                 
                                     if (!$(e.target).hasClass("gal_close")) {
                                          return false;
                                     }
-                                    
-                                //if (!$(e.target).data("gal_close")) {
-                                //         return false;
-                                //    }   
+               
                 
                                 e.bubbles=false;
                                 $(this).fadeOut(500).detach();

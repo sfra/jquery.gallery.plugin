@@ -28,8 +28,12 @@ div.gal_enlarged{
     z-index: 3;
     background-color: #fdfdfd;
     /*border: 1px solid yellow;*/
+    background-color: transparent;
     
 }
+
+
+
 img.gal_close{
     float: right;
     /*border-left: 100px solid #000000;*/
