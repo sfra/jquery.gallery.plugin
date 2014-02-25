@@ -1,12 +1,12 @@
-
+/*properties attr, src, fn,gal,offset, left, mouseOut, stopPropagation, bubbles, pageX, pageY, X, Y, html, append, css, top, parent, border, trigger, animate, opacity, remove, height, width, data, gal_close, class, on , children, wrap, addClass, find, deepExt, apply, defaults */
+/*global libs*/
 (function($){
 
 $.fn.gal=function(options){
-  
-
                     
   //var opt=$.extend({},$.fn.gal.defaults,options);
-  var opt={};
+  var opt={},
+  gal_scene=this;
   libs.deepExt.apply(opt,[$.fn.gal.defaults]);
   libs.deepExt.apply(opt,[options]);
   
@@ -14,75 +14,44 @@ $.fn.gal=function(options){
   //console.log(opt);
 
   
-    var gal_scene=this;
+
     this.children("img").wrap("<div></div>");
     this.addClass("gal_scene");
     this.find("div>img").addClass("gal_img");
     
-    var gal_close=$("<img />").attr({"src":"img/gal_close.png","width":"10px"}).data({"gal_close":true}).addClass("gal_close");
-    var gal_left=$("<img />").attr({"src":"img/gal_left.png","width":"10px","class":"gal_left"});
-    var gal_right=$("<img />").attr({"src":"img/gal_right.png","width":"10px","class":"gal_right"});
-    var gal_buttons=$('div.gal_scene').find("div");
-    
-    gal_list=$("ul#gal_list");
-
-
-  console.log($("ul#gal_list"));
-   
-      
-    
-    var gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
+    var gal_close=$("<img />").attr({"src":"img/gal_close.png","width":"10px"}).data({"gal_close":true}).addClass("gal_close"),
+    gal_left=$("<img />").attr({"src":"img/gal_left.png","width":"10px","class":"gal_left"}),
+    gal_right=$("<img />").attr({"src":"img/gal_right.png","width":"10px","class":"gal_right"}),
+    gal_buttons=$('div.gal_scene').find("div"),
+    gal_list=$("ul#gal_list"),
+    gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
 
                   
                   $(this).data("msdown",true).data( "position",{"X":e.pageX,"Y":e.pageY});
                   //console.log("mouse down");
                   }).on("mouseup",function(e){ /* when left mouse button is released, remove drag state */
                     $(this).data("msdown",false);
-                    
-                      console.log(gal_list.offset());
-                      console.log(parseInt(gal_list.css("width")));
-                      console.log(parseInt(gal_list.css("height")));
-                      console.log(e.pageX);
-                    
-                      if ( e.pageX>=gal_list.offset().left+parseInt(gal_list.css("padding-left")) &&
-                          e.pageX<=gal_list.offset().left+ parseInt(gal_list.css("width"))+parseInt(gal_list.css("padding-left")) &&
-                          
-                          e.pageY>=gal_list.offset().top &&  e.pageY<=gal_list.offset().top+ parseInt(gal_list.css("height"))
-                          
-                          ) {
-                                  var imgName=$(this).parent().children(".gal_img").attr("src");
-                                  console.log(imgName);
-                                  var li=$("<li></li>");
-                                  var button=$("<button />").css({"border":"1px solid #111111", "width":"10px"}).on("click",function(){
-                                    $(this).parent().animate({"opacity":"0","width":"0px"},500,function(){$(this).remove()});
-                                    
-                                    
- //                                   fadeTo(500,0,function(){$(this).remove()})
-                                  
+                                        
+                      if (e.pageX >= gal_list.offset().left + parseInt(gal_list.css("padding-left"),10) &&
+                           e.pageX <= gal_list.offset().left + parseInt(gal_list.css("width"),10) + parseInt(gal_list.css("padding-left"),10) &&
+                           e.pageY>=gal_list.offset().top &&  e.pageY <= gal_list.offset().top + parseInt(gal_list.css("height"),10)) {
+                            var imgName=$(this).parent().children(".gal_img").attr("src"),
+                            li=$("<li></li>");
+                            var button=$("<button />").css({"border":"1px solid #111111", "width":"10px"}).on("click",function(){
+                                    $(this).parent().animate({"opacity":"0","width":"0px"},500,function(){$(this).remove();});                                  
                                 });
-                                  button.html("-");
-                                  li.html(imgName);
-                                  li.append(button);
-                                  
-                                  gal_list.append(li);
-                                  
-                                  
-                                  console.log(gal_list.css("position"))
-                                  
-                                  $(".gal_enlarged").css({"background-color":"transparent"}).animate({"left":gal_list.offset().left+"px",
+                            button.html("-");
+                            li.html(imgName);
+                            li.append(button);
+                            gal_list.append(li);
+                                   
+                            $(".gal_enlarged").css({"background-color":"transparent"}).animate({"left":gal_list.offset().left+"px",
                                                              "top":gal_list.offset().top+"px",
                                                              "height":gal_list.css("height"),
                                                              "width":gal_list.css("width")
                                                              
-                                                             },function(){
-                                    
-                                          gal_close.trigger("click");                      
-                                    
-                                    });
-                                  
-                                  
-              
-                                               // console.log("LET DROP");
+                                                             },function(){ gal_close.trigger("click"); });
+
                       }
 
                     
@@ -95,8 +64,8 @@ $.fn.gal=function(options){
     $("body").on("mousemove",function(e){ /* if element is in drag state follow by mouse pointer*/
                   
                   if (gal_enlarged_top.data("msdown")) {
-                          var dX=e.pageX-gal_enlarged_top.data("position").X;
-                          var dY=e.pageY-gal_enlarged_top.data("position").Y;
+                          var dX=e.pageX-gal_enlarged_top.data("position").X,
+                          dY=e.pageY-gal_enlarged_top.data("position").Y;
                           gal_enlarged_top.data("position",{"X":e.pageX,"Y":e.pageY});
                           $(".gal_enlarged").css({"left":"+="+dX,"top":"+="+dY}); 
                   }
@@ -111,19 +80,13 @@ $.fn.gal=function(options){
     
  
     
-    var nrOfButtons=gal_buttons.length;
-    var width=parseInt(gal_scene.css("width"));
-    var heightButton=parseInt($(gal_buttons[0]).css("height"));
-
-    var wrapper=$("<div />").attr("class","wrapper");
-    var widthButton=parseInt(width/nrOfButtons)-10;
-    $("img.gal_img").css({"opacity": opt.mouseOut.opacity})
-    
-    
-    
-      
-    
-    var open=false;
+    var nrOfButtons=gal_buttons.length,
+    width=parseInt(gal_scene.css("width"),10),
+   // heightButton=parseInt($(gal_buttons[0]).css("height"),10),
+    //wrapper=$("<div />").attr("class","wrapper"),
+    widthButton=parseInt(width/nrOfButtons,10)-10;
+    $("img.gal_img").css({"opacity": opt.mouseOut.opacity}),
+    open=false;
     
     
     
@@ -150,17 +113,17 @@ $.fn.gal=function(options){
             open=true;
             var self=$(this);
             var html=$(this).html();
-            var position=$(this).position();
+          //  var position=$(this).position();
 
             
             $(this).fadeTo(500,0.3).clone().empty().css({
                 "width":"0px",
                 "height":"0px",
                 "background-color":opt.openProp["background-color"],
-                "left": parseInt(gal_scene.css("width"))/2-6+"px"
+                "left": parseInt(gal_scene.css("width"),10)/2-6+"px"
                 }).appendTo(gal_scene).addClass("gal_enlarged").animate({
-                "width":parseInt(gal_scene.css('width'))-12+"px",
-                "height":   100+parseInt(gal_scene.css('height'))-12+"px",
+                "width":parseInt(gal_scene.css('width'),10)-12+"px",
+                "height":   100+parseInt(gal_scene.css('height'),10)-12+"px",
                 "left":5+"px",
                 "top":5+"px"
                 
@@ -182,7 +145,7 @@ $.fn.gal=function(options){
                     }
                     var newImg=prev.children("img").attr("src");
                     
-                    if (newImg!=undefined) {
+                    if (newImg!==undefined) {
                             console.log(newImg);
                             $(this).children("img.gal_img").attr("src",newImg);   
                     
@@ -205,7 +168,7 @@ $.fn.gal=function(options){
                     }
                     var newImg=nxt.children("img.gal_img").attr("src");
                     
-                    if (newImg!=undefined) {
+                    if (newImg!==undefined) {
                             console.log(newImg);
                             $(this).children("img.gal_img").attr("src",newImg);   
                                         
@@ -250,10 +213,10 @@ $.fn.gal.defaults={
    openSpeed: 500,
    openbg: "#777777",
    mouseoutOpacity: 0.7,
-   mouseOut: {"opacity":.7},
-   openProp: {"speed":500,"css":{"opacity":.7},"background-color":"#777777"}
+   mouseOut: {"opacity":0.7},
+   openProp: {"speed":500,"css":{"opacity":0.7},"background-color":"#777777"}
    
-}
+};
 
 
 }( jQuery ));
