@@ -32,9 +32,7 @@ $.fn.gal=function(options){
                   }).on("mouseup",function(e){ /* when left mouse button is released, remove drag state */
                     $(this).data("msdown",false);
                                         
-                      if (e.pageX >= gal_list.offset().left + parseInt(gal_list.css("padding-left"),10) &&
-                           e.pageX <= gal_list.offset().left + parseInt(gal_list.css("width"),10) + parseInt(gal_list.css("padding-left"),10) &&
-                           e.pageY>=gal_list.offset().top &&  e.pageY <= gal_list.offset().top + parseInt(gal_list.css("height"),10)) {
+                      if (isOverTheList(e,gal_list)) {
                             var imgName=$(this).parent().children(".gal_img").attr("src"),
                             li=$("<li></li>");
                             var button=$("<button />").css({"border":"1px solid #111111", "width":"10px"}).on("click",function(){
@@ -62,8 +60,9 @@ $.fn.gal=function(options){
                   });
     
     $("body").on("mousemove",function(e){ /* if element is in drag state follow by mouse pointer*/
-                  
+                
                   if (gal_enlarged_top.data("msdown")) {
+                          gal_enlarged_top.css({"cursor":"move"});
                           var dX=e.pageX-gal_enlarged_top.data("position").X,
                           dY=e.pageY-gal_enlarged_top.data("position").Y;
                           gal_enlarged_top.data("position",{"X":e.pageX,"Y":e.pageY});
@@ -207,6 +206,15 @@ $.fn.gal=function(options){
   return this; 
 
 }
+
+
+  function isOverTheList(e,gal_list) {
+     return e.pageX >= gal_list.offset().left + parseInt(gal_list.css("padding-left"),10) &&
+                           e.pageX <= gal_list.offset().left + parseInt(gal_list.css("width"),10) + parseInt(gal_list.css("padding-left"),10) &&
+                           e.pageY>=gal_list.offset().top &&  e.pageY <= gal_list.offset().top + parseInt(gal_list.css("height"),10);
+  }
+
+
 
 $.fn.gal.defaults={
    enlarge: $.fn.fadeTo,
