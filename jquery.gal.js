@@ -8,11 +8,10 @@ $.fn.gal=function(options){
   var opt={},
   gal_scene=this;
   libs.deepExt.apply(opt,[$.fn.gal.defaults]);
-  libs.deepExt.apply(opt,[options]);
-  
-  //console.log(options);  
-  //console.log(opt);
+  libs.deepExt.apply(opt,[options]),
 
+  
+  sessionStorage.removeItem("imgList");
   
 
     this.children("img").wrap("<div></div>");
@@ -36,12 +35,29 @@ $.fn.gal=function(options){
                             var imgName=$(this).parent().children(".gal_img").attr("src"),
                             li=$("<li></li>");
                             var button=$("<button />").css({"border":"1px solid #111111", "width":"10px"}).on("click",function(){
-                                    $(this).parent().animate({"opacity":"0","width":"0px"},500,function(){$(this).remove();});                                  
+                                    $(this).parent().animate({"opacity":"0","width":"0px"},500,function(){
+                                    libs.removeFromLocalStorage("imgList",$(this).index());
+                                    
+                                      
+//                                      console.log($(this).index());
+                                      $(this).remove(); 
+                                                             });                                  
                                 });
                             button.html("-");
                             li.html(imgName);
                             li.append(button);
                             gal_list.append(li);
+                            //var listStorage=sessionStorage.getItem("imgList")===null?[]:sessionStorage.getItem("imgList");
+                            //listStorage+=imgName+";";
+                            //sessionStorage.setItem("imgList",listStorage);
+                            //
+                            //
+                            //sessionStorage.setItem(json2menu++,imgName);
+                           
+                           libs.addToLocalStorage("imgList",imgName);
+                           
+                             
+                             
                                    
                             $(".gal_enlarged").css({"background-color":"transparent"}).animate({"left":gal_list.offset().left+"px",
                                                              "top":gal_list.offset().top+"px",

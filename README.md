@@ -33,7 +33,7 @@ On the other hand put
 <ul id="gal_list">drop an image here</ul>
 ```
 for the list where you can drop an enlarged image (which is stored as a name of the file, but it can be easily
-used in some different way). 
+used in some different way by using sessionStorage item named imgList). 
 
 To init gallery, put in script.js the following command:
 
