@@ -83,14 +83,21 @@ $.fn.gal=function(options){
     width=parseInt(gal_scene.css("width"),10),
    // heightButton=parseInt($(gal_buttons[0]).css("height"),10),
     //wrapper=$("<div />").attr("class","wrapper"),
-    widthButton=parseInt(width/nrOfButtons,10)-10;
+    widthButton=(nrOfButtons>5)?140:parseInt(width/nrOfButtons,10)-10;
     $("img.gal_img").css({"opacity": opt.mouseOut.opacity}),
     open=false;
     
+
+    
+    if (nrOfButtons>5) {
+      gal_scene.width("720px").css({"padding-left":"20px"});
+    } else {
+      gal_scene.width(nrOfButtons*(widthButton+10)+"px").css({"padding-left":"20px"});
+    }
     
     
     gal_buttons.children("img").css({
-        "width": widthButton-10+"px"
+        "width": widthButton-10+"px","padding-left":"5px"
         }).on("mouseover",function(){
     
             $(this).animate({"opacity":1},500);    
