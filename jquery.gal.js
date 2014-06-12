@@ -23,7 +23,7 @@ $.fn.gal=function(options){
     gal_right=$("<img />").attr({"src":"img/gal_right.png","width":"10px","class":"gal_right"}),
     gal_buttons=$('div.gal_scene').find("div"),
     gal_list=$("ul#gal_list"),
-    gal_enlarged_top=$("<div></div>").css({"width":"90%","height":"10px","background-color":"red"}).on("mousedown",function(e){
+    gal_enlarged_top=$("<div class='topEnlarged'></div>").on("mousedown",function(e){
 
                   
                   $(this).data("msdown",true).data( "position",{"X":e.pageX,"Y":e.pageY});
