@@ -2,7 +2,8 @@
     "name": "jquery.gal",
     "version": "0.0.1",
     "title": "Image gallery plugin",
-    "author": {
+    "description: "Image gallery jquery plugin with drag and drop"
+	"author": {
         "name": "Szymon Frankowski",
         "email": "sz.frankyy@gmail.com"
     },
