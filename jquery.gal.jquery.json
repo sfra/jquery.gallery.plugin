@@ -1,0 +1,33 @@
+{
+    "name": "jquery.gal",
+    "version": "0.0.1",
+    "title": "Image gallery plugin",
+    "author": {
+        "name": "Szymon Frankowski",
+        "email": "sz.frankyy@gmail.com"
+    },
+    "licenses": [
+        {
+            "type": "GNU LESSER GENERAL PUBLIC LICENSE",
+            "url": "http://www.gnu.org/licenses/gpl.txt"
+        }
+    ],
+	"homepage": "https://github.com/sfra/jquery.gallery.plugin",
+	"docs": "https://github.com/sfra/jquery.gallery.plugin",
+    "dependencies": {
+        "jquery": ">=2.0"
+    },
+    "description": "",
+    "keywords": [
+        "gallery",
+		"image",
+        "jquery",
+        "plugin"
+    ],
+    "maintainers": [
+        {
+            "name": "Szymon Frankowski",
+            "email": "sz.frankyy@gmail.com"
+        }
+    ]
+}
