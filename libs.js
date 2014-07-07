@@ -6,7 +6,7 @@ var libs=(function (){
     var deepExt=function(obj) {
         var item;
         for (item in obj) {
-            if (typeof obj[item]==="object") {
+            if (typeof obj[item]==='object') {
                 if (!this[item]) {
                     this[item]={};
                 }
@@ -21,7 +21,7 @@ var libs=(function (){
     
     var addToLocalStorage=function(listName,value){
           var listStorage=sessionStorage.getItem(listName)===null?[]:sessionStorage.getItem(listName);
-          listStorage+=value+";";
+          listStorage+=value+';';
           sessionStorage.setItem(listName,listStorage);
         
         
@@ -30,9 +30,9 @@ var libs=(function (){
         
     var removeFromLocalStorage=function(listName,index){
             var listStorage=sessionStorage.getItem(listName)===null?[]:sessionStorage.getItem(listName);       
-            var listArray=listStorage.split(";");
+            var listArray=listStorage.split(';');
             listArray.splice(index,1);
-            sessionStorage.setItem(listName,listArray.join(";"));
+            sessionStorage.setItem(listName,listArray.join(';'));
     }    
         
 
