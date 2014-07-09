@@ -47,8 +47,6 @@
                 libs.addToLocalStorage('imgList', imgName);
 
 
-
-
                 $('.gal_enlarged').css({'background-color': 'transparent'}).animate({'left': gal_list.offset().left + 'px',
                     'top': gal_list.offset().top + 'px',
                     'height': gal_list.css('height'),
@@ -59,11 +57,6 @@
                 });
 
             }
-
-
-
-
-
 
         });
 
@@ -82,8 +75,6 @@
             e.bubbles = false;
 
         });
-
-
 
 
 
@@ -187,9 +178,6 @@
                         self = nxt;
 
                     }
-
-
-
 
 
                 }).prepend(gal_close).on('click', /* close image */
