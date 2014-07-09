@@ -89,3 +89,18 @@ ul#gal_list li{
     border: 1px solid #223344;
     
 }
+
+
+div.gal_leftButton {
+    position: absolute;
+    z-index:10;
+
+    float:left;
+    margin-left:5px;
+
+    width:40px;
+    background-color: #112233;
+    opacity: .5;
+    
+    
+}
