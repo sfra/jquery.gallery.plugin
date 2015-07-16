@@ -11,18 +11,11 @@ Put into the head section
         <script type="text/javascript" src="script.js"></script>
 ```
 
-In the body of put tags indicating images:
+Insert div which is intended as container of images :
 
 ```html
 
  <div id="scene">
-            <img src="img/01.jpg" />
-            <img src="img/02.jpg" />
-            <img src="img/03.jpg" />
-            <img src="img/04.jpg" />
-            <img src="img/05.jpg" />
-            <img src="img/06.jpg" />
-            <img src="img/07.jpg" />
   </div>
 
 ```
@@ -42,14 +35,15 @@ To init gallery, put in script.js the following command:
 
 $(document).ready(function(){
     
-    $('div#scene').gal();
+    $('div#scene').gal(options);
     
     
 });
     
 ```
 
-
+where options is js object containing the field nrOfImgs which indicates 
+the number of images.
 
 
 or with parameters (which can contain objects as values):
@@ -57,7 +51,7 @@ or with parameters (which can contain objects as values):
 
 $(document).ready(function(){
     
-    $('div#scene').gal({"mouseOut":{"opacity":.1}});
+    $('div#scene').gal({"nrOfImgs": 4,"mouseOut":{"opacity":.1}});
     
     
 });
