@@ -11,6 +11,16 @@
         libs.deepExt.apply(opt, [options]),
                 sessionStorage.removeItem('imgList');
 
+         var $img_it=null;       
+        for(var i=0; i<options.nrOfImgs;i++){
+            
+            $img_it=$('<img />');
+            $img_it.attr('src','img/gallery/0'+(i+1)+'.jpg')
+            this.append($img_it);
+            $img_it=null;
+            
+             
+        }
 
         this.children('img').wrap('<div></div>');
 
