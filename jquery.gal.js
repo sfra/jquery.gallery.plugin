@@ -15,7 +15,7 @@
         for(var i=0; i<options.nrOfImgs;i++){
             
             $img_it=$('<img />');
-            $img_it.attr('src','img/gallery/0'+(i+1)+'.jpg')
+            $img_it.attr('src',options.imagesDir+'0'+(i+1)+'.jpg')
             this.append($img_it);
             $img_it=null;
             

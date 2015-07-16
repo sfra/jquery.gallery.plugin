@@ -43,7 +43,7 @@ $(document).ready(function(){
 ```
 
 where options is js object containing the field nrOfImgs which indicates 
-the number of images.
+the number of images and imagesDir - path to the images.
 
 
 or with parameters (which can contain objects as values):
@@ -51,7 +51,7 @@ or with parameters (which can contain objects as values):
 
 $(document).ready(function(){
     
-    $('div#scene').gal({"nrOfImgs": 4,"mouseOut":{"opacity":.1}});
+    $('div#scene').gal({"nrOfImgs": 4,"imagesDir" : "img/gallery/","mouseOut":{"opacity":.1}});
     
     
 });
