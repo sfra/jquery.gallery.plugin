@@ -64,6 +64,9 @@ function isOverTheList(e, galList) {
                 });
                 button.html('remove');
                 li.html(imgName);
+                let $img=$('<img />').attr('src',imgName);
+                $img.attr('width','80px');
+                li.append($img);
                 li.append(button);
                 galList.append(li);
                 libs.addToSessionStorage('imgList', imgName);
@@ -160,21 +163,35 @@ function isOverTheList(e, galList) {
                     let $img = $(this).find('.gal_img'); 
                     $img.data('scale','1');
                     $img.data('left','0');
+                    $img.data('top','0');
                     $(this).css({'background-color': 'transparent'}).children('img.gal_img').wrap('<div class="gal_imgWrapper"></div>').css({'opacity': 1}).on('click',(e)=>{
                         $img.css({cursor:'zoom-in'});
                         let scale =parseInt($img.data('scale'));
                         let left = parseInt($img.data('left'));
+                        let top = parseInt($img.data('top'));
+                        
                         scale=scale*1.5;
                         let clientX = e.clientX;
                         let clientY = e.clientY;
-                        if(clientX<20) {
-                            console.log('<20');
-                            left+=5;
+                        console.log(clientY);
+                        if(clientX<40) {
+                            console.log('<40');
+                            left+=10;
                             $img.data('left',left)
 
-                            $img.css({transform:`translate(${left}px,0px)`,transition:'all .2s ease-in'});
+                            $img.css({transform:`translate(${left}px,${top}px)`,transition:'all .2s ease-in'});
                             return;
                         }
+
+                        if(clientY<80) {
+                            console.log('Y<80');
+                            top+=10;
+                            $img.data('top',top);
+
+                            $img.css({transform:`translate(${left}px,${top}px)`,transition:'all .2s ease-in'});
+                            return;
+                        }
+
                         if(scale>5) {scale=5;}
 
                         $img.data('scale',scale*1.5);

@@ -87,17 +87,7 @@ img.gal_right{
     overflow: hidden;
     cursor: zoom-in;
 }
-ul#gal_list{
-    border: 1px solid #112233;
-    width: 200px;
-    height: 300px;
-    float: left;
-    position: relative;
-    left: 0px;
-    top:0px;
-    list-style-type: none;
-    
-}
+
 
 #gal_droparea {
     position: relative; 
@@ -120,25 +110,35 @@ ul#gal_list{
 
 
 ul#gal_list {
+    border: 1px solid #112233;
+    width: 200px;
+    height: 300px;
+    float: left;
+    position: relative;
+    left: 0px;
+    top:0px;
+    list-style-type: none;
     width: 100%;
     background-color: rgba(0,0,0,.7);
-    margin-top: -19px;
-}
-
-
-
-ul#gal_list {
+    /* margin-top: -19px; */
     margin-top: 0px;   
 }
 ul#gal_list li{
     list-style-type: none;
     width: 30%;
+    display: block;
+    float: left;
     padding: 5px;
     border: 1px solid #223344;
     color:rgb(200,200,200);     
     font-family: Cochin, Cambria, Georgia, Times, 'Times New Roman', serif;
-    font: outline;
+
     
+}
+ul#gal_list li img {
+    position: relative;
+    left: 10px;
+    top: 10px;
 }
 
 
