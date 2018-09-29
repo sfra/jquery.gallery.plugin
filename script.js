@@ -1,14 +1,10 @@
-$(document).ready(function(){
-    
+$(document).ready(()=>{
+    'use strict';
     $('div#scene').gal({
-        
-        "mouseOut":{"opacity":.1},
-        "imagesDir" : "img/gallery/",
-        "nrOfImgs": 4
-        
-        
-        
-        });
-    
-    
+        'mouseOut': {
+            'opacity': 0.1
+        },
+        'imagesDir': 'img/gallery/',
+        'nrOfImgs': 6
     });
+});

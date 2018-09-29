@@ -1,71 +1,82 @@
 /*properties attr, src, fn,gal,offset, left, mouseOut, stopPropagation, bubbles, pageX, pageY, X, Y, html, append, css, top, parent, border, trigger, animate, opacity, remove, height, width, data, gal_close, class, on , children, wrap, addClass, find, deepExt, apply, defaults */
-/*global libs*/
+/*global libs, sessionStorage , jQuery*/
+
+
+
+function isOverTheList(e, galList) {
+    'use strict';
+    return e.pageX >= galList.offset().left + parseInt(galList.css('padding-left'), 10) &&
+            e.pageX <= galList.offset().left + parseInt(galList.css('width'), 10) + parseInt(galList.css('padding-left'), 10) &&
+            e.pageY >= galList.offset().top && e.pageY <= galList.offset().top + parseInt(galList.css('height'), 10);
+}
+
 (function($) {
+    'use strict';
 
     $.fn.gal = function(options) {
 
-        //var opt=$.extend({},$.fn.gal.defaults,options);
-        var opt = {},
-                gal_scene = this;
+        //let opt=$.extend({},$.fn.gal.defaults,options);
+        let opt = {}, galScene = this, $imgIt=null, open=null;
+        
         libs.deepExt.apply(opt, [$.fn.gal.defaults]);
-        libs.deepExt.apply(opt, [options]),
-                sessionStorage.removeItem('imgList');
+        libs.deepExt.apply(opt, [options]);
+        sessionStorage.removeItem('imgList');
 
-         var $img_it=null;       
-        for(var i=0; i<options.nrOfImgs;i++){
+
+        for(let i=0; i<options.nrOfImgs;i++){
             
-            $img_it=$('<img />');
-            $img_it.attr('src',options.imagesDir+'0'+(i+1)+'.jpg')
-            this.append($img_it);
-            $img_it=null;
+            $imgIt=$('<img />');
+            $imgIt.attr('src',options.imagesDir+'0'+(i+1)+'.jpg');
+            this.append($imgIt);
+            $imgIt=null;
             
              
         }
 
         this.children('img').wrap('<div></div>');
 
-        var $button_left=$('<div><<<</div>').addClass('gal_leftButton');
+
 
         this.addClass('gal_scene');
         this.find('div>img').addClass('gal_img');
 
-        var gal_close = $('<img />').attr({'src': 'img/gal_close.png', 'width': '10px'}).data({'gal_close': true}).addClass('gal_close'),
-                gal_left = $('<img />').attr({'src': 'img/gal_left.png', 'width': '10px', 'class': 'gal_left'}),
-                gal_right = $('<img />').attr({'src': 'img/gal_right.png', 'width': '10px', 'class': 'gal_right'}),
-                gal_buttons = $('div.gal_scene').find('div'),
-                gal_list = $('ul#gal_list'),
-                gal_enlarged_top = $('<div class="topEnlarged"></div>').on('mousedown', function(e) {
+        let galClose = $('<img />').attr({'src': 'img/gal_close.png', 'width': '25px'}).data({'gal_close': true}).addClass('gal_close'),
+                galLeft = $('<img />').attr({'src': 'img/gal_left.png', 'width': '30px', 'class': 'gal_left'}),
+                galRight = $('<img />').attr({'src': 'img/gal_right.png', 'width': '30px', 'class': 'gal_right'}),
+                galButtons = $('div.gal_scene').find('div'),
+                galList = $('ul#gal_list'),
+                galEnlargedTop = $('<div class="topEnlarged"></div>').on('mousedown', function(e) {
 
 
             $(this).data('msdown', true).data('position', {'X': e.pageX, 'Y': e.pageY});
         }).on('mouseup', function(e) { /* when left mouse button is released, remove drag state */
             $(this).data('msdown', false);
 
-            if (isOverTheList(e, gal_list)) {
-                var imgName = $(this).parent().children('.gal_img').attr('src'),
+            if (isOverTheList(e, galList)) {
+                let imgName = $(this).parent().children('.gal_img').attr('src'),
                         li = $('<li></li>');
-                var button = $('<button />').css({'border': '1px solid #111111', 'width': '10px'}).on('click', function() {
+                let button = $('<button class="gal_button"/>').on('click', function() {
                     $(this).parent().animate({'opacity': '0', 'width': '0px'}, 500, function() {
                         libs.removeFromLocalStorage('imgList', $(this).index());
                         $(this).remove();
                     });
                 });
-                button.html('-');
+                button.html('remove');
                 li.html(imgName);
                 li.append(button);
-                gal_list.append(li);
-                libs.addToLocalStorage('imgList', imgName);
+                galList.append(li);
+                libs.addToSessionStorage('imgList', imgName);
 
 
 
 
-                $('.gal_enlarged').css({'background-color': 'transparent'}).animate({'left': gal_list.offset().left + 'px',
-                    'top': gal_list.offset().top + 'px',
-                    'height': gal_list.css('height'),
-                    'width': gal_list.css('width')
+                $('.gal_enlarged').css({'background-color': 'transparent'}).animate({'left': galList.offset().left + 'px',
+                    'top': galList.offset().top + 'px',
+                    //'height': galList.css('height'),
+                    'width': galList.css('width')
 
                 }, function() {
-                    gal_close.trigger('click');
+                    galClose.trigger('click');
                 });
 
             }
@@ -79,11 +90,11 @@
 
         $('body').on('mousemove', function(e) { /* if element is in drag state follow by mouse pointer*/
 
-            if (gal_enlarged_top.data('msdown')) {
-                gal_enlarged_top.css({'cursor': 'move'});
-                var dX = e.pageX - gal_enlarged_top.data('position').X,
-                        dY = e.pageY - gal_enlarged_top.data('position').Y;
-                gal_enlarged_top.data('position', {'X': e.pageX, 'Y': e.pageY});
+            if (galEnlargedTop.data('msdown')) {
+                galEnlargedTop.css({'cursor': 'move'});
+                let dX = e.pageX - galEnlargedTop.data('position').X,
+                        dY = e.pageY - galEnlargedTop.data('position').Y;
+                galEnlargedTop.data('position', {'X': e.pageX, 'Y': e.pageY});
                 $('.gal_enlarged').css({'left': '+=' + dX, 'top': '+=' + dY});
             }
 
@@ -97,23 +108,23 @@
 
 
 
-        var nrOfButtons = gal_buttons.length,
-                width = parseInt(gal_scene.css('width'), 10),
+        let nrOfButtons = galButtons.length,
+                width = parseInt(galScene.css('width'), 10),
                 widthButton = (nrOfButtons > 5) ? 140 : parseInt(width / nrOfButtons, 10) - 10;
         
-        $('img.gal_img').css({'opacity': opt.mouseOut.opacity}),
-                open = false;
+        $('img.gal_img').css({'opacity': opt.mouseOut.opacity});
+        open = false;
 
 
 
         if (nrOfButtons > 5) {
-            gal_scene.width('720px').css({'padding-left': '20px'});
+            galScene.width('720px').css({'padding-left': '20px'});
         } else {
-            gal_scene.width(nrOfButtons * (widthButton + 10) + 'px').css({'padding-left': '20px'});
+            galScene.width(nrOfButtons * (widthButton + 10) + 'px').css({'padding-left': '20px'});
         }
 
 
-        gal_buttons.children('img').css({
+        galButtons.children('img').css({
             'width': widthButton - 10 + 'px', 'padding-left': '5px'
         }).on('mouseover', function() {
 
@@ -125,7 +136,7 @@
         });
 
 
-        gal_buttons.addClass('gal_button').css({
+        galButtons.addClass('gal_button').css({
             'width': widthButton
 
         }).on('click', function() { /* enlarge image */
@@ -134,19 +145,20 @@
                 return;
             }
             open = true;
-            var self = $(this);
-            var html = $(this).html();
-            //  var position=$(this).position();
+            let self = $(this);
+            let html = $(this).html();
+            //  let position=$(this).position();
 
 
             $(this).fadeTo(500, 0.3).clone().empty().css({
                 'width': '0px',
                 'height': '0px',
                 'background-color': opt.openProp['background-color'],
-                'left': parseInt(gal_scene.css('width'), 10) / 2 - 6 + 'px'
-            }).appendTo(gal_scene).addClass('gal_enlarged').animate({
-                'width': parseInt(gal_scene.css('width'), 10) - 12 + 'px',
-                'height': 100 + parseInt(gal_scene.css('height'), 10) - 12 + 'px',
+                'left': parseInt(galScene.css('width'), 10) / 2 - 6 + 'px'
+            }).appendTo(galScene).addClass('gal_enlarged').animate({
+               // 'width': parseInt(galScene.css('width'), 10) - 12 + 'px',
+                //'height': 100 + parseInt(galScene.css('height'), 10) - 12 + 'px',
+                'width': '500px',
                 'left': 5 + 'px',
                 'top': 5 + 'px'
 
@@ -155,17 +167,17 @@
 
                     $(this).css({'background-color': 'transparent'}).children('img.gal_img').css({'opacity': 1});
 
-                }).prepend(gal_enlarged_top).prepend($button_left).prepend(gal_left).on('click', function(e) { /* change to left image*/
+                }).prepend(galEnlargedTop).prepend(galLeft).on('click', function(e) { /* change to left image*/
 
                     if (!$(e.target).hasClass('gal_left')) {
                         return;
                     }
 
-                    var prev = self.prev();
-                    if (prev == self) {
+                    let prev = self.prev();
+                    if (prev === self) {
                         return;
                     }
-                    var newImg = prev.children('img').attr('src');
+                    let newImg = prev.children('img').attr('src');
 
                     if (newImg !== undefined) {
                         console.log(newImg);
@@ -177,18 +189,18 @@
                         self = prev;
 
                     }
-                }).prepend(gal_right).on('click', function(e) { /* change to right image */
+                }).prepend(galRight).on('click', function(e) { /* change to right image */
 
 
                     if (!$(e.target).hasClass('gal_right')) {
                         return;
                     }
 
-                    var nxt = self.next();
+                    let nxt = self.next();
                     if (nxt.hasClass('gal_enlarged')) {
                         return;
                     }
-                    var newImg = nxt.children('img.gal_img').attr('src');
+                    let newImg = nxt.children('img.gal_img').attr('src');
 
                     if (newImg !== undefined) {
                         console.log(newImg);
@@ -202,7 +214,7 @@
 
 
 
-                }).prepend(gal_close).on('click', /* close image */
+                }).prepend(galClose).on('click', /* close image */
                         function(e) {
 
                             if (!$(e.target).hasClass('gal_close')) {
@@ -220,7 +232,7 @@
                         }).children('img.gal_img').css({
                     'width': '100%'
                 });
-            }).children('.gal_leftButton').css({'color':'red','height': parseInt($('.gal_enlarged').find('img:eq(3)').css('height'), 10) + 'px'});;
+            }).children('.gal_leftButton').css({'color':'red','height': parseInt($('.gal_enlarged').find('img:eq(3)').css('height'), 10) + 'px'});
            
 
         });
@@ -229,14 +241,9 @@
 
         return this;
 
-    }
+    };
 
 
-    function isOverTheList(e, gal_list) {
-        return e.pageX >= gal_list.offset().left + parseInt(gal_list.css('padding-left'), 10) &&
-                e.pageX <= gal_list.offset().left + parseInt(gal_list.css('width'), 10) + parseInt(gal_list.css('padding-left'), 10) &&
-                e.pageY >= gal_list.offset().top && e.pageY <= gal_list.offset().top + parseInt(gal_list.css('height'), 10);
-    }
 
 
 

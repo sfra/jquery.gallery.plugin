@@ -1,7 +1,13 @@
+html {
+    width: 100%;
+}
+
 div.gal_scene{
     /*position: relative;*/
-    width: 800px;
-    height: 300px;
+    width: 100%;
+    height: 400px;
+    padding: 20px;
+    margin-top: 40px;
     background-color: #333333;
     margin-right: 10px;
     float: left;
@@ -18,6 +24,12 @@ div.gal_button{
     height: 100px;
     position: relative;
      
+    
+}
+button.gal_button {
+    width: 100px;
+    margin: 5px;
+    background-color: #ff0000;
     
 }
 /*div.gal_button img.gal_img{
@@ -57,34 +69,59 @@ img.gal_right{
 
 
 
-
-.wrapper{
-    
-}
-
 .topEnlarged {
     
     width:80%;
-    height:20px;
+    height:40px;
     margin-left: 5px;
-    background-image: url("img/topEnlardedBG.png");
-    background-repeat: repeat-x;
+    background-color: rgba(0,0,0,.7);
+
+
 }
 
 
 ul#gal_list{
     border: 1px solid #112233;
     width: 200px;
+    height: 300px;
     float: left;
     position: relative;
     left: 0px;
     top:0px;
+    list-style-type: none;
     
 }
 
+#gal_droparea {
+    position: relative; 
+    clear: both;
 
+    margin-top: 30px;
+    transform: translateY(50px);
+        
+}
+#gal_droparea  h3 {
+    height: 40px;
+    line-height: 40px;
+    background: rgba(10,10,10,.9);
+    color: #fafffa;
 
+}
+ul#gal_list {
+    width: 100%;
+    background-color: rgba(0,0,0,.7);
+    margin-top: -19px;
+}
+
+#scene > div.gal_button.gal_enlarged > img {
+    margin: 10px;
+}
+
+ul#gal_list {
+    margin-top: 0px;   
+}
 ul#gal_list li{
+    list-style-type: none;
     width: 100%;
     border: 1px solid #223344;
     

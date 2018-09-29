@@ -19,7 +19,7 @@ var libs=(function (){
     };
     
     
-    var addToLocalStorage=function(listName,value){
+    var addToSessionStorage=function(listName,value){
           var listStorage=sessionStorage.getItem(listName)===null?[]:sessionStorage.getItem(listName);
           listStorage+=value+';';
           sessionStorage.setItem(listName,listStorage);
@@ -36,7 +36,7 @@ var libs=(function (){
     }    
         
 
-return {deepExt: deepExt, addToLocalStorage: addToLocalStorage, removeFromLocalStorage: removeFromLocalStorage};
+return {deepExt: deepExt, addToSessionStorage: addToSessionStorage, removeFromLocalStorage: removeFromLocalStorage};
 })();
 
 
