@@ -54,7 +54,7 @@ function isOverTheList(e, galList) {
             $(this).data('msdown', false);
 
             if (isOverTheList(e, galList)) {
-                let imgName = $(this).parent().children('.gal_img').attr('src'),
+                let imgName = $(this).parent().find('.gal_img').attr('src'),
                         li = $('<li></li>');
                 let button = $('<button class="gal_button"/>').on('click', function() {
                     $(this).parent().animate({'opacity': '0', 'width': '0px'}, 500, function() {
@@ -157,8 +157,37 @@ function isOverTheList(e, galList) {
             }, opt.openProp.speed, function() {
                 
                 $(this).html(html).fadeTo(0, 0).fadeTo(500, 1, function() {
+                    let $img = $(this).find('.gal_img'); 
+                    $img.data('scale','1');
+                    $img.data('left','0');
+                    $(this).css({'background-color': 'transparent'}).children('img.gal_img').wrap('<div class="gal_imgWrapper"></div>').css({'opacity': 1}).on('click',(e)=>{
+                        $img.css({cursor:'zoom-in'});
+                        let scale =parseInt($img.data('scale'));
+                        let left = parseInt($img.data('left'));
+                        scale=scale*1.5;
+                        let clientX = e.clientX;
+                        let clientY = e.clientY;
+                        if(clientX<20) {
+                            console.log('<20');
+                            left+=5;
+                            $img.data('left',left)
 
-                    $(this).css({'background-color': 'transparent'}).children('img.gal_img').wrap('<div class="img-wrapper"></div>').css({'opacity': 1});
+                            $img.css({transform:`translate(${left}px,0px)`,transition:'all .2s ease-in'});
+                            return;
+                        }
+                        if(scale>5) {scale=5;}
+
+                        $img.data('scale',scale*1.5);
+
+                        $img.css({transform:`scale(${scale}) translate(${-clientX*.2}px,${-clientY*.2}px)`,transition:'all .5s ease-in'});
+                    }).on('contextmenu',(e)=>{
+                        $img.css({cursor:'zoom-out'});
+                        let scale =parseInt($img.data('scale'))*0.67;
+                        if(scale<1) {scale=1};
+                        $img.data('scale',scale);
+                        $img.css({transform:`scale(${scale})`});
+                        e.preventDefault();
+                    });
 
 
                 }).prepend(galEnlargedTop).prepend(galLeft).on('click', function(e) { /* change to left image*/

@@ -83,7 +83,10 @@ img.gal_right{
 
 }
 
-
+.gal_imgWrapper {
+    overflow: hidden;
+    cursor: zoom-in;
+}
 ul#gal_list{
     border: 1px solid #112233;
     width: 200px;
@@ -112,6 +115,10 @@ ul#gal_list{
     color: #fafffa;
 
 }
+
+
+
+
 ul#gal_list {
     width: 100%;
     background-color: rgba(0,0,0,.7);
