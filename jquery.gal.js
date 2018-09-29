@@ -26,6 +26,7 @@ function isOverTheList(e, galList) {
         for(let i=0; i<options.nrOfImgs;i++){
             
             $imgIt=$('<img />');
+            
             $imgIt.attr('src',options.imagesDir+'0'+(i+1)+'.jpg');
             this.append($imgIt);
             $imgIt=null;
@@ -45,7 +46,7 @@ function isOverTheList(e, galList) {
                 galRight = $('<img />').attr({'src': 'img/gal_right.png', 'width': '30px', 'class': 'gal_right'}),
                 galButtons = $('div.gal_scene').find('div'),
                 galList = $('ul#gal_list'),
-                galEnlargedTop = $('<div class="topEnlarged"></div>').on('mousedown', function(e) {
+                galEnlargedTop = $('<div class="gal_topEnlarged"></div>').on('mousedown', function(e) {
 
 
             $(this).data('msdown', true).data('position', {'X': e.pageX, 'Y': e.pageY});
@@ -81,14 +82,9 @@ function isOverTheList(e, galList) {
 
             }
 
-
-
-
-
-
         });
 
-        $('body').on('mousemove', function(e) { /* if element is in drag state follow by mouse pointer*/
+        $('body').on('mousemove', (e)=>{ /* if element is in drag state follow by mouse pointer*/
 
             if (galEnlargedTop.data('msdown')) {
                 galEnlargedTop.css({'cursor': 'move'});
@@ -98,14 +94,10 @@ function isOverTheList(e, galList) {
                 $('.gal_enlarged').css({'left': '+=' + dX, 'top': '+=' + dY});
             }
 
-
             e.stopPropagation();
             e.bubbles = false;
 
         });
-
-
-
 
 
         let nrOfButtons = galButtons.length,
@@ -125,7 +117,7 @@ function isOverTheList(e, galList) {
 
 
         galButtons.children('img').css({
-            'width': widthButton - 10 + 'px', 'padding-left': '5px'
+            'width': `${widthButton - 10}px`
         }).on('mouseover', function() {
 
             $(this).animate({'opacity': 1}, 500);
@@ -140,38 +132,42 @@ function isOverTheList(e, galList) {
             'width': widthButton
 
         }).on('click', function() { /* enlarge image */
-
             if (open) {
                 return;
             }
+            
+
+
             open = true;
             let self = $(this);
             let html = $(this).html();
             //  let position=$(this).position();
-
 
             $(this).fadeTo(500, 0.3).clone().empty().css({
                 'width': '0px',
                 'height': '0px',
                 'background-color': opt.openProp['background-color'],
                 'left': parseInt(galScene.css('width'), 10) / 2 - 6 + 'px'
-            }).appendTo(galScene).addClass('gal_enlarged').animate({
-               // 'width': parseInt(galScene.css('width'), 10) - 12 + 'px',
-                //'height': 100 + parseInt(galScene.css('height'), 10) - 12 + 'px',
-                'width': '500px',
-                'left': 5 + 'px',
-                'top': 5 + 'px'
+            }).appendTo(galScene).addClass('gal_enlarged').addClass('gal_clearfix').animate({
+                 'width': '400px',
+                'height': '240px',
+                'left': `5px`,
+                'top':`5px`
 
             }, opt.openProp.speed, function() {
+                
                 $(this).html(html).fadeTo(0, 0).fadeTo(500, 1, function() {
 
-                    $(this).css({'background-color': 'transparent'}).children('img.gal_img').css({'opacity': 1});
+                    $(this).css({'background-color': 'transparent'}).children('img.gal_img').wrap('<div class="img-wrapper"></div>').css({'opacity': 1});
+
 
                 }).prepend(galEnlargedTop).prepend(galLeft).on('click', function(e) { /* change to left image*/
 
+                    
                     if (!$(e.target).hasClass('gal_left')) {
                         return;
                     }
+
 
                     let prev = self.prev();
                     if (prev === self) {
@@ -181,7 +177,7 @@ function isOverTheList(e, galList) {
 
                     if (newImg !== undefined) {
                         console.log(newImg);
-                        $(this).children('img.gal_img').attr('src', newImg);
+                        $(this).find('img.gal_img').attr('src', newImg);
 
 
                         console.log('gal_left');
@@ -190,7 +186,6 @@ function isOverTheList(e, galList) {
 
                     }
                 }).prepend(galRight).on('click', function(e) { /* change to right image */
-
 
                     if (!$(e.target).hasClass('gal_right')) {
                         return;
@@ -204,8 +199,8 @@ function isOverTheList(e, galList) {
 
                     if (newImg !== undefined) {
                         console.log(newImg);
-                        $(this).children('img.gal_img').attr('src', newImg);
-
+                        $(this).find('img.gal_img').attr('src', newImg);
+                       
                         self = nxt;
 
                     }
@@ -234,8 +229,7 @@ function isOverTheList(e, galList) {
                 });
             }).children('.gal_leftButton').css({'color':'red','height': parseInt($('.gal_enlarged').find('img:eq(3)').css('height'), 10) + 'px'});
            
-
-        });
+          });
 
 
 

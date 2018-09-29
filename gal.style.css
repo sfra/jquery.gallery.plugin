@@ -5,11 +5,11 @@ html {
 div.gal_scene{
     /*position: relative;*/
     width: 100%;
-    height: 400px;
+    height: 200px;
     padding: 20px;
     margin-top: 40px;
-    background-color: #333333;
     margin-right: 10px;
+    background-color: #333333;
     float: left;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -28,7 +28,7 @@ div.gal_button{
 }
 button.gal_button {
     width: 100px;
-    margin: 5px;
+    margin: 5px 5px 5px 20px;
     background-color: #ff0000;
     
 }
@@ -38,9 +38,11 @@ button.gal_button {
 div.gal_enlarged{
     position: absolute;
     z-index: 3;
+    height: 240px;
+    overflow: hidden;
     background-color: #fdfdfd;
     /*border: 1px solid yellow;*/
-    background-color: transparent;
+    background-color: rgba(0,0,0,.7);
     
 }
 
@@ -49,31 +51,33 @@ div.gal_enlarged{
 img.gal_close{
     float: right;
     /*border-left: 100px solid #000000;*/
-    margin-left: 2px;
+    margin: 5px 5px auto 15px;
     
 }
+
 
 img.gal_left{
     float: right;
     /*border-left: 100px solid #000000;*/
-    
+    margin: 5px 5px auto 8px;    
 }
 
 img.gal_right{
     float: right;
     /*border-left: 100px solid #000000;*/
-        margin-left: 2px;
+
+        margin: 5px 5px auto 8px;
 }
 
 
 
 
 
-.topEnlarged {
+.gal_topEnlarged {
     
-    width:80%;
+    width:400px;
     height:40px;
-    margin-left: 5px;
+    /* margin-left: 15px; */
     background-color: rgba(0,0,0,.7);
 
 
@@ -103,6 +107,7 @@ ul#gal_list{
 #gal_droparea  h3 {
     height: 40px;
     line-height: 40px;
+    padding-left: 10px;
     background: rgba(10,10,10,.9);
     color: #fafffa;
 
@@ -113,17 +118,19 @@ ul#gal_list {
     margin-top: -19px;
 }
 
-#scene > div.gal_button.gal_enlarged > img {
-    margin: 10px;
-}
+
 
 ul#gal_list {
     margin-top: 0px;   
 }
 ul#gal_list li{
     list-style-type: none;
-    width: 100%;
+    width: 30%;
+    padding: 5px;
     border: 1px solid #223344;
+    color:rgb(200,200,200);     
+    font-family: Cochin, Cambria, Georgia, Times, 'Times New Roman', serif;
+    font: outline;
     
 }
 
@@ -140,4 +147,11 @@ div.gal_leftButton {
     opacity: .5;
     
     
+}
+
+.gal_clearfix:after {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
 }
