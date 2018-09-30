@@ -16,7 +16,7 @@ Insert div which is intended as container of images :
 ```html
 
  <div id="scene">
-  </div>
+</div>
 
 ```
 
@@ -37,12 +37,11 @@ $(document).ready(function(){
     
     $('div#scene').gal(options);
     
-    
 });
     
 ```
 
-where options is js object containing the field nrOfImgs which indicates 
+where options is an object containing the field nrOfImgs which indicates 
 the number of images and imagesDir - path to the images.
 
 

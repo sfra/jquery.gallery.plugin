@@ -5,6 +5,6 @@ $(document).ready(()=>{
             'opacity': 0.1
         },
         'imagesDir': 'img/gallery/',
-        'nrOfImgs': 6
+        'nrOfImgs': 8
     });
 });

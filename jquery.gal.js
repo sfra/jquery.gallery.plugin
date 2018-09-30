@@ -6,32 +6,35 @@
 function isOverTheList(e, galList) {
     'use strict';
     return e.pageX >= galList.offset().left + parseInt(galList.css('padding-left'), 10) &&
-            e.pageX <= galList.offset().left + parseInt(galList.css('width'), 10) + parseInt(galList.css('padding-left'), 10) &&
-            e.pageY >= galList.offset().top && e.pageY <= galList.offset().top + parseInt(galList.css('height'), 10);
+        e.pageX <= galList.offset().left + parseInt(galList.css('width'), 10) + parseInt(galList.css('padding-left'), 10) &&
+        e.pageY >= galList.offset().top && e.pageY <= galList.offset().top + parseInt(galList.css('height'), 10);
 }
 
-(function($) {
+(function ($) {
     'use strict';
 
-    $.fn.gal = function(options) {
+    $.fn.gal = function (options) {
 
         //let opt=$.extend({},$.fn.gal.defaults,options);
-        let opt = {}, galScene = this, $imgIt=null, open=null;
-        
+        let opt = {},
+            galScene = this,
+            $imgIt = null,
+            open = null;
+
         libs.deepExt.apply(opt, [$.fn.gal.defaults]);
         libs.deepExt.apply(opt, [options]);
         sessionStorage.removeItem('imgList');
 
 
-        for(let i=0; i<options.nrOfImgs;i++){
-            
-            $imgIt=$('<img />');
-            
-            $imgIt.attr('src',options.imagesDir+'0'+(i+1)+'.jpg');
+        for (let i = 0; i < options.nrOfImgs; i++) {
+
+            $imgIt = $('<img />');
+
+            $imgIt.attr('src', options.imagesDir + '0' + (i + 1) + '.jpg');
             this.append($imgIt);
-            $imgIt=null;
-            
-             
+            $imgIt = null;
+
+
         }
 
         this.children('img').wrap('<div></div>');
@@ -41,60 +44,90 @@ function isOverTheList(e, galList) {
         this.addClass('gal_scene');
         this.find('div>img').addClass('gal_img');
 
-        let galClose = $('<img />').attr({'src': 'img/gal_close.png', 'width': '25px'}).data({'gal_close': true}).addClass('gal_close'),
-                galLeft = $('<img />').attr({'src': 'img/gal_left.png', 'width': '30px', 'class': 'gal_left'}),
-                galRight = $('<img />').attr({'src': 'img/gal_right.png', 'width': '30px', 'class': 'gal_right'}),
-                galButtons = $('div.gal_scene').find('div'),
-                galList = $('ul#gal_list'),
-                galEnlargedTop = $('<div class="gal_topEnlarged"></div>').on('mousedown', function(e) {
+        let galClose = $('<img />').attr({
+                'src': 'img/gal_close.png',
+                'width': '25px'
+            }).data({
+                'gal_close': true
+            }).addClass('gal_close'),
+            galLeft = $('<img />').attr({
+                'src': 'img/gal_left.png',
+                'width': '30px',
+                'class': 'gal_left'
+            }),
+            galRight = $('<img />').attr({
+                'src': 'img/gal_right.png',
+                'width': '30px',
+                'class': 'gal_right'
+            }),
+            galButtons = $('div.gal_scene').find('div'),
+            galList = $('ul#gal_list'),
+            galEnlargedTop = $('<div class="gal_topEnlarged"></div>').on('mousedown', function (e) {
 
 
-            $(this).data('msdown', true).data('position', {'X': e.pageX, 'Y': e.pageY});
-        }).on('mouseup', function(e) { /* when left mouse button is released, remove drag state */
-            $(this).data('msdown', false);
+                $(this).data('msdown', true).data('position', {
+                    'X': e.pageX,
+                    'Y': e.pageY
+                });
+            }).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
+                $(this).data('msdown', false);
 
-            if (isOverTheList(e, galList)) {
-                let imgName = $(this).parent().find('.gal_img').attr('src'),
+                if (isOverTheList(e, galList)) {
+                    let imgName = $(this).parent().find('.gal_img').attr('src'),
                         li = $('<li></li>');
-                let button = $('<button class="gal_button"/>').on('click', function() {
-                    $(this).parent().animate({'opacity': '0', 'width': '0px'}, 500, function() {
-                        libs.removeFromLocalStorage('imgList', $(this).index());
-                        $(this).remove();
+                    let button = $('<button class="gal_button"/>').on('click', function () {
+                        $(this).parent().animate({
+                            'opacity': '0',
+                            'width': '0px'
+                        }, 500, function () {
+                            libs.removeFromLocalStorage('imgList', $(this).index());
+                            $(this).remove();
+                        });
                     });
-                });
-                button.html('remove');
-                li.html(imgName);
-                let $img=$('<img />').attr('src',imgName);
-                $img.attr('width','80px');
-                li.append($img);
-                li.append(button);
-                galList.append(li);
-                libs.addToSessionStorage('imgList', imgName);
+                    button.html('remove');
+                    li.html(imgName);
+                    let $img = $('<img />').attr('src', imgName);
+                    $img.attr('width', '80px');
+                    li.append($img);
+                    li.append(button);
+                    galList.append(li);
+                    libs.addToSessionStorage('imgList', imgName);
 
 
 
 
-                $('.gal_enlarged').css({'background-color': 'transparent'}).animate({'left': galList.offset().left + 'px',
-                    'top': galList.offset().top + 'px',
-                    //'height': galList.css('height'),
-                    'width': galList.css('width')
+                    $('.gal_enlarged').css({
+                        'background-color': 'transparent'
+                    }).animate({
+                        'left': galList.offset().left + 'px',
+                        'top': galList.offset().top + 'px',
+                        //'height': galList.css('height'),
+                        'width': galList.css('width')
 
-                }, function() {
-                    galClose.trigger('click');
-                });
+                    }, function () {
+                        galClose.trigger('click');
+                    });
 
-            }
+                }
 
-        });
+            });
 
-        $('body').on('mousemove', (e)=>{ /* if element is in drag state follow by mouse pointer*/
+        $('body').on('mousemove', (e) => { /* if element is in drag state follow by mouse pointer*/
 
             if (galEnlargedTop.data('msdown')) {
-                galEnlargedTop.css({'cursor': 'move'});
+                galEnlargedTop.css({
+                    'cursor': 'move'
+                });
                 let dX = e.pageX - galEnlargedTop.data('position').X,
-                        dY = e.pageY - galEnlargedTop.data('position').Y;
-                galEnlargedTop.data('position', {'X': e.pageX, 'Y': e.pageY});
-                $('.gal_enlarged').css({'left': '+=' + dX, 'top': '+=' + dY});
+                    dY = e.pageY - galEnlargedTop.data('position').Y;
+                galEnlargedTop.data('position', {
+                    'X': e.pageX,
+                    'Y': e.pageY
+                });
+                $('.gal_enlarged').css({
+                    'left': '+=' + dX,
+                    'top': '+=' + dY
+                });
             }
 
             e.stopPropagation();
@@ -104,41 +137,47 @@ function isOverTheList(e, galList) {
 
 
         let nrOfButtons = galButtons.length,
-                width = parseInt(galScene.css('width'), 10),
-                widthButton = (nrOfButtons > 5) ? 140 : parseInt(width / nrOfButtons, 10) - 10;
-        
-        $('img.gal_img').css({'opacity': opt.mouseOut.opacity});
+            width = parseInt(galScene.css('width'), 10),
+            widthButton = (nrOfButtons > 5) ? 140 : parseInt(width / nrOfButtons, 10) - 10;
+
+        $('img.gal_img').css({
+            'opacity': opt.mouseOut.opacity
+        });
         open = false;
 
 
 
-        if (nrOfButtons > 5) {
-            galScene.width('720px').css({'padding-left': '20px'});
-        } else {
-            galScene.width(nrOfButtons * (widthButton + 10) + 'px').css({'padding-left': '20px'});
-        }
+        // if (nrOfButtons > 5) {
+        //     galScene.width('720px').css({'padding-left': '20px'});
+        // } else {
+        //     galScene.width(nrOfButtons * (widthButton + 10) + 'px').css({'padding-left': '20px'});
+        // }
 
 
         galButtons.children('img').css({
             'width': `${widthButton - 10}px`
-        }).on('mouseover', function() {
+        }).on('mouseover', function () {
 
-            $(this).animate({'opacity': 1}, 500);
+            $(this).animate({
+                'opacity': 1
+            }, 500);
 
-        }).on('mouseout', function() {
+        }).on('mouseout', function () {
 
-            $(this).animate({'opacity': opt.mouseoutOpacity}, 500);
+            $(this).animate({
+                'opacity': opt.mouseoutOpacity
+            }, 500);
         });
 
 
         galButtons.addClass('gal_button').css({
             'width': widthButton
 
-        }).on('click', function() { /* enlarge image */
+        }).on('click', function () { /* enlarge image */
             if (open) {
                 return;
             }
-            
+
 
 
             open = true;
@@ -152,64 +191,87 @@ function isOverTheList(e, galList) {
                 'background-color': opt.openProp['background-color'],
                 'left': parseInt(galScene.css('width'), 10) / 2 - 6 + 'px'
             }).appendTo(galScene).addClass('gal_enlarged').addClass('gal_clearfix').animate({
-                 'width': '400px',
+                'width': '400px',
                 'height': '240px',
-                'left': `5px`,
-                'top':`5px`
+                'left': `105px`,
+                'top': `105px`
 
-            }, opt.openProp.speed, function() {
-                
-                $(this).html(html).fadeTo(0, 0).fadeTo(500, 1, function() {
-                    let $img = $(this).find('.gal_img'); 
-                    $img.data('scale','1');
-                    $img.data('left','0');
-                    $img.data('top','0');
-                    $(this).css({'background-color': 'transparent'}).children('img.gal_img').wrap('<div class="gal_imgWrapper"></div>').css({'opacity': 1}).on('click',(e)=>{
-                        $img.css({cursor:'zoom-in'});
-                        let scale =parseInt($img.data('scale'));
+            }, opt.openProp.speed, function () {
+
+                $(this).html(html).fadeTo(0, 0).fadeTo(500, 1, function () {
+                    let $img = $(this).find('.gal_img');
+                    $img.data('scale', '1');
+                    $img.data('left', '0');
+                    $img.data('top', '0');
+                    $(this).css({
+                        'background-color': 'transparent'
+                    }).children('img.gal_img').wrap('<div class="gal_imgWrapper"></div>').css({
+                        'opacity': 1
+                    }).on('click', (e) => {
+                        $img.css({
+                            cursor: 'zoom-in'
+                        });
+                        let scale = parseInt($img.data('scale'));
                         let left = parseInt($img.data('left'));
                         let top = parseInt($img.data('top'));
-                        
-                        scale=scale*1.5;
+
+                        scale = scale * 1.5;
                         let clientX = e.clientX;
                         let clientY = e.clientY;
                         console.log(clientY);
-                        if(clientX<40) {
+                        if (clientX < 40) {
                             console.log('<40');
-                            left+=10;
-                            $img.data('left',left)
+                            left += 10;
+                            $img.data('left', left)
 
-                            $img.css({transform:`translate(${left}px,${top}px)`,transition:'all .2s ease-in'});
+                            $img.css({
+                                transform: `translate(${left}px,${top}px)`,
+                                transition: 'all .2s ease-in'
+                            });
                             return;
                         }
 
-                        if(clientY<80) {
+                        if (clientY < 80) {
                             console.log('Y<80');
-                            top+=10;
-                            $img.data('top',top);
+                            top += 10;
+                            $img.data('top', top);
 
-                            $img.css({transform:`translate(${left}px,${top}px)`,transition:'all .2s ease-in'});
+                            $img.css({
+                                transform: `translate(${left}px,${top}px)`,
+                                transition: 'all .2s ease-in'
+                            });
                             return;
                         }
 
-                        if(scale>5) {scale=5;}
+                        if (scale > 5) {
+                            scale = 5;
+                        }
 
-                        $img.data('scale',scale*1.5);
+                        $img.data('scale', scale * 1.5);
 
-                        $img.css({transform:`scale(${scale}) translate(${-clientX*.2}px,${-clientY*.2}px)`,transition:'all .5s ease-in'});
-                    }).on('contextmenu',(e)=>{
-                        $img.css({cursor:'zoom-out'});
-                        let scale =parseInt($img.data('scale'))*0.67;
-                        if(scale<1) {scale=1};
-                        $img.data('scale',scale);
-                        $img.css({transform:`scale(${scale})`});
+                        $img.css({
+                            transform: `scale(${scale}) translate(${-clientX*.2}px,${-clientY*.2}px)`,
+                            transition: 'all .5s ease-in'
+                        });
+                    }).on('contextmenu', (e) => {
+                        $img.css({
+                            cursor: 'zoom-out'
+                        });
+                        let scale = parseInt($img.data('scale')) * 0.67;
+                        if (scale < 1) {
+                            scale = 1
+                        };
+                        $img.data('scale', scale);
+                        $img.css({
+                            transform: `scale(${scale})`
+                        });
                         e.preventDefault();
                     });
 
 
-                }).prepend(galEnlargedTop).prepend(galLeft).on('click', function(e) { /* change to left image*/
+                }).prepend(galEnlargedTop).prepend(galLeft).on('click', function (e) { /* change to left image*/
 
-                    
+
                     if (!$(e.target).hasClass('gal_left')) {
                         return;
                     }
@@ -231,7 +293,7 @@ function isOverTheList(e, galList) {
                         self = prev;
 
                     }
-                }).prepend(galRight).on('click', function(e) { /* change to right image */
+                }).prepend(galRight).on('click', function (e) { /* change to right image */
 
                     if (!$(e.target).hasClass('gal_right')) {
                         return;
@@ -246,7 +308,7 @@ function isOverTheList(e, galList) {
                     if (newImg !== undefined) {
                         console.log(newImg);
                         $(this).find('img.gal_img').attr('src', newImg);
-                       
+
                         self = nxt;
 
                     }
@@ -256,26 +318,29 @@ function isOverTheList(e, galList) {
 
 
                 }).prepend(galClose).on('click', /* close image */
-                        function(e) {
+                    function (e) {
 
-                            if (!$(e.target).hasClass('gal_close')) {
-                                return false;
-                            }
-
-
-                            e.bubbles = false;
-                            $(this).fadeOut(500).detach();
-                            self.fadeTo(500, 1);
-                            open = false;
-
-                            e.stopPropagation();
+                        if (!$(e.target).hasClass('gal_close')) {
                             return false;
-                        }).children('img.gal_img').css({
+                        }
+
+
+                        e.bubbles = false;
+                        $(this).fadeOut(500); //.detach();
+                        self.fadeTo(500, 1);
+                        open = false;
+
+                        e.stopPropagation();
+                        return false;
+                    }).children('img.gal_img').css({
                     'width': '100%'
                 });
-            }).children('.gal_leftButton').css({'color':'red','height': parseInt($('.gal_enlarged').find('img:eq(3)').css('height'), 10) + 'px'});
-           
-          });
+            }).children('.gal_leftButton').css({
+                'color': 'red',
+                'height': parseInt($('.gal_enlarged').find('img:eq(3)').css('height'), 10) + 'px'
+            });
+
+        });
 
 
 
@@ -292,16 +357,18 @@ function isOverTheList(e, galList) {
         openSpeed: 500,
         openbg: '#777777',
         mouseoutOpacity: 0.7,
-        mouseOut: {'opacity': 0.7},
-        openProp: {'speed': 500, 'css': {'opacity': 0.7}, 'background-color': '#777777'}
+        mouseOut: {
+            'opacity': 0.7
+        },
+        openProp: {
+            'speed': 500,
+            'css': {
+                'opacity': 0.7
+            },
+            'background-color': '#777777'
+        }
 
     };
 
 
 }(jQuery));
-
-
-
-
-
-

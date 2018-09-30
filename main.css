@@ -1,0 +1,35 @@
+footer {
+    position: absolute;
+    right: 0px;
+    bottom: -140px;
+    left: 0px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 1rem;
+    clear: both;
+    position: relative;
+    transform: translate(0px, -110px);
+    z-index: 400;
+    height: 40px;
+    margin-top: 20px;
+    color: #ffffff;
+    font-size: 13px;
+    transform: translateX(-7px);
+    background-color: #000000;
+    font-family: 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 40px;
+    width: 95vw;
+}
+
+@media(max-width:700px) {
+    footer {
+        width: 91vw;
+    }
+
+}
+
+footer a {
+    right: 5px;
+    text-decoration: none;
+    color: #101010;
+}
