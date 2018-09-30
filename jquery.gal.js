@@ -1,8 +1,3 @@
-/*properties attr, src, fn,gal,offset, left, mouseOut, stopPropagation, bubbles, pageX, pageY, X, Y, html, append, css, top, parent, border, trigger, animate, opacity, remove, height, width, data, gal_close, class, on , children, wrap, addClass, find, deepExt, apply, defaults */
-/*global libs, sessionStorage , jQuery*/
-
-
-
 function isOverTheList(e, galList) {
     'use strict';
     return e.pageX >= galList.offset().left + parseInt(galList.css('padding-left'), 10) &&
@@ -15,7 +10,7 @@ function isOverTheList(e, galList) {
 
     $.fn.gal = function (options) {
 
-        //let opt=$.extend({},$.fn.gal.defaults,options);
+
         let opt = {},
             galScene = this,
             $imgIt = null,
@@ -101,10 +96,9 @@ function isOverTheList(e, galList) {
                     }).animate({
                         'left': galList.offset().left + 'px',
                         'top': galList.offset().top + 'px',
-                        //'height': galList.css('height'),
                         'width': galList.css('width')
 
-                    }, function () {
+                    }, () => {
                         galClose.trigger('click');
                     });
 
@@ -115,20 +109,32 @@ function isOverTheList(e, galList) {
         $('body').on('mousemove', (e) => { /* if element is in drag state follow by mouse pointer*/
 
             if (galEnlargedTop.data('msdown')) {
-                galEnlargedTop.css({
-                    'cursor': 'move'
-                });
+
                 let dX = e.pageX - galEnlargedTop.data('position').X,
                     dY = e.pageY - galEnlargedTop.data('position').Y;
                 galEnlargedTop.data('position', {
                     'X': e.pageX,
                     'Y': e.pageY
                 });
+
                 $('.gal_enlarged').css({
                     'left': '+=' + dX,
                     'top': '+=' + dY
                 });
+
+
+                if (e.pageY > window.innerHeight - 50) {
+                    console.dir(galList[0]);
+                    galList[0].scrollIntoView({
+                        behavior: 'smooth'
+                    });
+
+                }
+
             }
+
+
+
 
             e.stopPropagation();
             e.bubbles = false;
@@ -144,14 +150,6 @@ function isOverTheList(e, galList) {
             'opacity': opt.mouseOut.opacity
         });
         open = false;
-
-
-
-        // if (nrOfButtons > 5) {
-        //     galScene.width('720px').css({'padding-left': '20px'});
-        // } else {
-        //     galScene.width(nrOfButtons * (widthButton + 10) + 'px').css({'padding-left': '20px'});
-        // }
 
 
         galButtons.children('img').css({
@@ -178,12 +176,9 @@ function isOverTheList(e, galList) {
                 return;
             }
 
-
-
             open = true;
             let self = $(this);
             let html = $(this).html();
-            //  let position=$(this).position();
 
             $(this).fadeTo(500, 0.3).clone().empty().css({
                 'width': '0px',
@@ -193,8 +188,8 @@ function isOverTheList(e, galList) {
             }).appendTo(galScene).addClass('gal_enlarged').addClass('gal_clearfix').animate({
                 'width': '400px',
                 'height': '240px',
-                'left': `105px`,
-                'top': `105px`
+                'left': `50px`,
+                'top': `${window.pageYOffset+30}px`
 
             }, opt.openProp.speed, function () {
 
@@ -218,11 +213,11 @@ function isOverTheList(e, galList) {
                         scale = scale * 1.5;
                         let clientX = e.clientX;
                         let clientY = e.clientY;
-                        console.log(clientY);
+
                         if (clientX < 40) {
-                            console.log('<40');
+
                             left += 10;
-                            $img.data('left', left)
+                            $img.data('left', left);
 
                             $img.css({
                                 transform: `translate(${left}px,${top}px)`,
@@ -232,7 +227,7 @@ function isOverTheList(e, galList) {
                         }
 
                         if (clientY < 80) {
-                            console.log('Y<80');
+
                             top += 10;
                             $img.data('top', top);
 
@@ -250,7 +245,7 @@ function isOverTheList(e, galList) {
                         $img.data('scale', scale * 1.5);
 
                         $img.css({
-                            transform: `scale(${scale}) translate(${-clientX*.2}px,${-clientY*.2}px)`,
+                            transform: `scale(${scale}) translate(${-clientX*0.2}px,${-clientY*0.2}px)`,
                             transition: 'all .5s ease-in'
                         });
                     }).on('contextmenu', (e) => {
@@ -259,8 +254,8 @@ function isOverTheList(e, galList) {
                         });
                         let scale = parseInt($img.data('scale')) * 0.67;
                         if (scale < 1) {
-                            scale = 1
-                        };
+                            scale = 1;
+                        }
                         $img.data('scale', scale);
                         $img.css({
                             transform: `scale(${scale})`
@@ -284,12 +279,7 @@ function isOverTheList(e, galList) {
                     let newImg = prev.children('img').attr('src');
 
                     if (newImg !== undefined) {
-                        console.log(newImg);
                         $(this).find('img.gal_img').attr('src', newImg);
-
-
-                        console.log('gal_left');
-                        console.log(prev);
                         self = prev;
 
                     }
@@ -306,16 +296,9 @@ function isOverTheList(e, galList) {
                     let newImg = nxt.children('img.gal_img').attr('src');
 
                     if (newImg !== undefined) {
-                        console.log(newImg);
                         $(this).find('img.gal_img').attr('src', newImg);
-
                         self = nxt;
-
                     }
-
-
-
-
 
                 }).prepend(galClose).on('click', /* close image */
                     function (e) {

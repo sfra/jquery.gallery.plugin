@@ -1,6 +1,6 @@
 {
   "browser": true,
   "esversion": 6,
-  "predef": ["state", "console", "sessionStorage", "resizeImages", "functions"]
+  "predef": ["state", "console", "sessionStorage", "resizeImages", "functions", "libs", "sessionStorage" , "jQuery"]
 
 }

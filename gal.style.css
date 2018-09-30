@@ -56,19 +56,19 @@ button.gal_button {
 }*/
 div.gal_enlarged {
     position: absolute;
-    z-index: 3;
-    height: 240px;
+    z-index: 700;
     overflow: hidden;
     background-color: #fdfdfd;
     /*border: 1px solid yellow;*/
     background-color: rgba(0, 0, 0, .7);
-
+    cursor: move;
 }
 
 
 
 img.gal_close {
     float: right;
+    cursor: pointer;
     /*border-left: 100px solid #000000;*/
     margin: 5px 5px auto 15px;
 
@@ -77,13 +77,15 @@ img.gal_close {
 
 img.gal_left {
     float: right;
-    /*border-left: 100px solid #000000;*/
+    cursor: pointer;
+
     margin: 5px 5px auto 8px;
 }
 
 img.gal_right {
     float: right;
-    /*border-left: 100px solid #000000;*/
+
+    cursor: pointer;
 
     margin: 5px 5px auto 8px;
 }
