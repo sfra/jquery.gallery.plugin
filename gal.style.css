@@ -2,22 +2,7 @@ html {
     width: 100%;
 }
 
-body {
-    background: rgb(11, 11, 11);
-}
 
-h1 {
-    color: rgb(150, 150, 150);
-    float: right;
-    padding-right: 90px;
-    padding-left: 40px;
-    padding-bottom: 10px;
-    width: 80%;
-    text-decoration-line: underline;
-    font-variant: small-caps;
-    box-shadow: 2px 2px 5px rgb(200, 200, 200), -2px -2px 1px rgb(200, 200, 200);
-
-}
 
 div.gal_scene {
     /*position: relative;*/
@@ -91,7 +76,13 @@ img.gal_right {
 }
 
 
+img.gal_maximize {
+    float: right;
 
+    cursor: pointer;
+
+    margin: 5px 5px auto 8px;
+}
 
 
 .gal_topEnlarged {

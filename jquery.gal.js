@@ -45,18 +45,27 @@ function isOverTheList(e, galList) {
             }).data({
                 'gal_close': true
             }).addClass('gal_close'),
+
+            galMaximize = $('<img />').attr({
+                'src': 'img/gal_maximize.png',
+                'width': '30px',
+                'class': 'gal_maximize'
+            }),
             galLeft = $('<img />').attr({
                 'src': 'img/gal_left.png',
                 'width': '30px',
                 'class': 'gal_left'
             }),
+
             galRight = $('<img />').attr({
                 'src': 'img/gal_right.png',
                 'width': '30px',
                 'class': 'gal_right'
             }),
+
             galButtons = $('div.gal_scene').find('div'),
             galList = $('ul#gal_list'),
+            galEnlarged = $('.gal_enlarged'),
             galEnlargedTop = $('<div class="gal_topEnlarged"></div>').on('mousedown', function (e) {
 
 
@@ -66,7 +75,6 @@ function isOverTheList(e, galList) {
                 });
             }).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
                 $(this).data('msdown', false);
-
                 if (isOverTheList(e, galList)) {
                     let imgName = $(this).parent().find('.gal_img').attr('src'),
                         li = $('<li></li>');
@@ -76,6 +84,7 @@ function isOverTheList(e, galList) {
                             'width': '0px'
                         }, 500, function () {
                             libs.removeFromLocalStorage('imgList', $(this).index());
+
                             $(this).remove();
                         });
                     });
@@ -89,9 +98,9 @@ function isOverTheList(e, galList) {
                     libs.addToSessionStorage('imgList', imgName);
 
 
+                    galClose.trigger('click');
 
-
-                    $('.gal_enlarged').css({
+                    galEnlarged.css({
                         'background-color': 'transparent'
                     }).animate({
                         'left': galList.offset().left + 'px',
@@ -124,7 +133,6 @@ function isOverTheList(e, galList) {
 
 
                 if (e.pageY > window.innerHeight - 50) {
-                    console.dir(galList[0]);
                     galList[0].scrollIntoView({
                         behavior: 'smooth'
                     });
@@ -300,7 +308,7 @@ function isOverTheList(e, galList) {
                         self = nxt;
                     }
 
-                }).prepend(galClose).on('click', /* close image */
+                }).prepend(galMaximize).prepend(galClose).on('click', /* close image */
                     function (e) {
 
                         if (!$(e.target).hasClass('gal_close')) {
@@ -325,6 +333,28 @@ function isOverTheList(e, galList) {
 
         });
 
+
+
+        galMaximize.on('click', () => {
+
+
+            if ($(this).find('.gal_maximize')[0].src.indexOf('maximize') > 0) { //if is maximized
+                $('.gal_enlarged').animate({
+                    'width': '98vw',
+                    'height': '100%',
+                    'left': '0px'
+                });
+                $(this).find('.gal_maximize')[0].src = 'img/gal_minimize.png';
+            } else {
+                $('.gal_enlarged').animate({
+                    'width': '400px',
+                    'height': '240px',
+                    'left': '40px'
+                });
+                $(this).find('.gal_maximize')[0].src = 'img/gal_maximize.png';
+            }
+
+        });
 
 
         return this;
