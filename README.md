@@ -1,11 +1,19 @@
-jquery.gallery.plugin
-=====================
+# jquery.gallery.plugin
 
-image gallery jquery plugin.
+
+## Instalation
+
+Put into console
+
+```bash
+bower install
+```
+
+## Usage
 Put into the head section 
 ```html
         <link rel="stylesheet" type="text/css" href="gal.style.css" />
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.js"></script>
+        <script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="jquery.gal.js"></script>
         <script type="text/javascript" src="libs.js"></script>
         <script type="text/javascript" src="script.js"></script>
