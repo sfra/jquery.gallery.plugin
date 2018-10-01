@@ -1,0 +1,25 @@
+{
+  "name": "jquery.gallery.plugin",
+  "version": "1.0.0",
+  "description": "Gallery. Plugin for jquery.",
+  "main": "jquery.gal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "bash bin/build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfra/jquery.gallery.plugin.git"
+  },
+  "keywords": [
+    "jauery",
+    "plugin",
+    "gallery"
+  ],
+  "author": "Szymon Frankowski <sz.frankyy@gmail.com>",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/sfra/jquery.gallery.plugin/issues"
+  },
+  "homepage": "https://github.com/sfra/jquery.gallery.plugin#readme"
+}
