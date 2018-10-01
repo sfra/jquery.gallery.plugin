@@ -1,0 +1,25 @@
+{
+  "name": "jquery.gallery.plugin",
+  "homepage": "https://github.com/sfra/jquery.gallery.plugin",
+  "authors": [
+    "Szymon Frankowski <sz.frankyy@gmail.com>"
+  ],
+  "description": "Gallery. Plugin for jquery.",
+  "main": "index.html",
+  "keywords": [
+    "jquery",
+    "plugin",
+    "gallery"
+  ],
+  "license": "GPL-3.0-only",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
