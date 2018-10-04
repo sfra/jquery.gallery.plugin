@@ -28,8 +28,6 @@ function isOverTheList(e, galList) {
             $imgIt.attr('src', options.imagesDir + '0' + (i + 1) + '.jpg');
             this.append($imgIt);
             $imgIt = null;
-
-
         }
 
         this.children('img').wrap('<div></div>');
@@ -74,8 +72,10 @@ function isOverTheList(e, galList) {
                     'Y': e.pageY
                 });
             }).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
+
+
                 $(this).data('msdown', false);
-                if (isOverTheList(e, galList)) {
+                if (isOverTheList(e, galList) && $(this).parent().find('.gal_maximize').attr('src')==='img/gal_maximize.png') {
                     let imgName = $(this).parent().find('.gal_img').attr('src'),
                         li = $('<li></li>');
                     let button = $('<button class="gal_button"/>').on('click', function () {
