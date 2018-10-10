@@ -7,11 +7,14 @@ function isOverTheList(e, galList) {
 
 (function ($) {
     'use strict';
-
+    const state = {
+        imgAnim: false
+    }
     $.fn.gal = function (options) {
 
 
         let opt = {},
+
             galScene = this,
             $imgIt = null,
             open = null;
@@ -75,7 +78,7 @@ function isOverTheList(e, galList) {
 
 
                 $(this).data('msdown', false);
-                if (isOverTheList(e, galList) && $(this).parent().find('.gal_maximize').attr('src')==='img/gal_maximize.png') {
+                if (isOverTheList(e, galList) && $(this).parent().find('.gal_maximize').attr('src') === 'img/gal_maximize.png') {
                     let imgName = $(this).parent().find('.gal_img').attr('src'),
                         li = $('<li></li>');
                     let button = $('<button class="gal_button"/>').on('click', function () {
@@ -125,11 +128,32 @@ function isOverTheList(e, galList) {
                     'X': e.pageX,
                     'Y': e.pageY
                 });
+                // console.log(Math.sign(dX));
+                // console.log(Math.sign(dY));
 
-                $('.gal_enlarged').css({
-                    'left': '+=' + dX,
-                    'top': '+=' + dY
-                });
+
+                $('.gal_enlarged')
+                    .animate({
+                        'left': '+=' + (dX + Math.sign(dX) * 0),
+                        'top': '+=' + (dY + Math.sign(dY) * 0)
+                    }, 15);
+
+                // .animate({
+                //     'left': '+=' + (-Math.sign(dX) * 1),
+                //     'top': '+=' + (-Math.sign(dY) * 1)
+                // }, 15)
+                // .animate({
+                //     'left': '+=' + (-Math.sign(dX) * 2),
+                //     'top': '+=' + (-Math.sign(dY) * 2)
+                // }, 15)
+                // .animate({
+                //     'left': '-=' + (Math.sign(dX) * 2),
+                //     'top': '-=' + (Math.sign(dY) * 2)
+                // });
+                // .animate({
+                //     'left': '-=' + (Math.sign(dX) * 2),
+                //     'top': '-=' + (Math.sign(dY) * 2)
+                // }, 15);
 
 
                 if (e.pageY > window.innerHeight - 50) {
@@ -277,8 +301,8 @@ function isOverTheList(e, galList) {
 
                     if (!$(e.target).hasClass('gal_left')) {
                         return;
-                    }
 
+                    }
 
                     let prev = self.prev();
                     if (prev === self) {
@@ -287,7 +311,9 @@ function isOverTheList(e, galList) {
                     let newImg = prev.children('img').attr('src');
 
                     if (newImg !== undefined) {
-                        $(this).find('img.gal_img').attr('src', newImg);
+                        let galImg = $(this).find('img.gal_img');
+                        animateImg(galImg, newImg)
+
                         self = prev;
 
                     }
@@ -303,8 +329,11 @@ function isOverTheList(e, galList) {
                     }
                     let newImg = nxt.children('img.gal_img').attr('src');
 
+                    let galImg = $(this).find('img.gal_img');
                     if (newImg !== undefined) {
-                        $(this).find('img.gal_img').attr('src', newImg);
+
+                        animateImg(galImg, newImg);
+
                         self = nxt;
                     }
 
@@ -314,6 +343,8 @@ function isOverTheList(e, galList) {
                         if (!$(e.target).hasClass('gal_close')) {
                             return false;
                         }
+
+                        galMaximize.attr('src', 'img/gal_maximize.png');
 
 
                         e.bubbles = false;
@@ -362,7 +393,24 @@ function isOverTheList(e, galList) {
     };
 
 
+    function animateImg(galImg, newImg) {
+        if (state.imgAnim) return;
+        state.imgAnim = true;
+        galImg[0].style.transition = 'all .5s ease-in';
+        galImg[0].style.filter = 'blur(20px)';
 
+        galImg.animate({
+            opacity: 0
+        }, 250, () => {
+            galImg[0].style.filter = 'blur(0px)';
+            galImg.attr('src', newImg);
+        }).animate({
+            opacity: 1
+        }, 250, () => {
+            state.imgAnim = false;
+        })
+
+    }
 
 
     $.fn.gal.defaults = {
