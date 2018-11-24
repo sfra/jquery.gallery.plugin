@@ -9,7 +9,12 @@ function isOverTheList(e, galList) {
     'use strict';
     const state = {
         imgAnim: false
-    }
+    };
+    
+    let dragged = false;
+    let viewPosition = 'top';
+    
+    const dragPosition = {X:undefined,Y:undefined};
     $.fn.gal = function (options) {
 
 
@@ -22,7 +27,106 @@ function isOverTheList(e, galList) {
         libs.deepExt.apply(opt, [$.fn.gal.defaults]);
         libs.deepExt.apply(opt, [options]);
         sessionStorage.removeItem('imgList');
+  
+  
+		function dragStart(e, $this) {
+  
+			dragged=true;
+			
 
+            $this.data('msdown', true).data('position', {
+				'X': e.pageX || e.originalEvent.touches[0].pageX,
+                'Y': e.pageY || e.originalEvent.touches[0].pageY
+             });
+                
+                
+             dragDuring.X = e.pageX || e.originalEvent.touches[0].pageX;
+             dragDuring.Y = e.pageY || e.originalEvent.touches[0].pageY;
+				
+			
+            }
+        
+        
+        function dragDuring(e,$this){
+			
+                let ePageX = e.pageX || e.originalEvent.touches[0].pageX;
+                let ePageY = e.pageY || e.originalEvent.touches[0].pageY;
+				
+
+			
+
+ 
+              if (dragged) {
+
+                let dX = ePageX - dragDuring.X,
+                    dY = ePageY - dragDuring.Y;
+      
+                  dragDuring.X = ePageX;
+                  dragDuring.Y = ePageY;
+      
+                
+                $('.gal_enlarged')
+                    .animate({
+                        'left': '+=' + (dX + Math.sign(dX) * 0),
+                        'top': '+=' + (dY + Math.sign(dY) * 0)
+                    }, 15);
+
+
+                if (ePageY > window.innerHeight - 50) {
+                    galList[0].scrollIntoView({
+                        behavior: 'smooth'
+                    });
+
+                }
+
+            }
+
+            e.stopPropagation();
+            e.bubbles = false;
+        }
+
+
+        function dragFinish(e, $this) {
+			console.log('dragfinish');
+            dragged = false;
+            if (isOverTheList(e, galList) && $this.parent().find('.gal_maximize').attr('src') === 'img/gal_maximize.png') {
+                let imgName = $this.parent().find('.gal_img').attr('src'),
+                    li = $('<li></li>');
+                let button = $('<button class="gal_button"/>').on('click', function () {
+                    $(this).parent().animate({
+                        'opacity': '0',
+                        'width': '0px'
+                    }, 500, function () {
+                        libs.removeFromLocalStorage('imgList', $this.index());
+
+                        $this.remove();
+                    });
+                });
+                button.html('remove');
+                li.html(imgName);
+                let $img = $('<img />').attr('src', imgName);
+                $img.attr('width', '80px');
+                li.append($img);
+                li.append(button);
+                galList.append(li);
+                libs.addToSessionStorage('imgList', imgName);
+
+
+                galClose.trigger('click');
+
+                galEnlarged.css({
+                    'background-color': 'transparent'
+                }).animate({
+                    'left': galList.offset().left + 'px',
+                    'top': galList.offset().top + 'px',
+                    'width': galList.css('width')
+
+                }, () => {
+                    galClose.trigger('click');
+                });
+
+            }
+        }
 
         for (let i = 0; i < options.nrOfImgs; i++) {
 
@@ -69,109 +173,31 @@ function isOverTheList(e, galList) {
             galEnlarged = $('.gal_enlarged'),
             galEnlargedTop = $('<div class="gal_topEnlarged"></div>').on('mousedown', function (e) {
 
+				dragStart(e,$(this));
 
-                $(this).data('msdown', true).data('position', {
-                    'X': e.pageX,
-                    'Y': e.pageY
-                });
-            }).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
+            }).on('touchstart',(e)=>{
+				dragStart(e,$(this));
+			}).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
+				dragFinish(e, $(this));
 
+            
 
-                $(this).data('msdown', false);
-                if (isOverTheList(e, galList) && $(this).parent().find('.gal_maximize').attr('src') === 'img/gal_maximize.png') {
-                    let imgName = $(this).parent().find('.gal_img').attr('src'),
-                        li = $('<li></li>');
-                    let button = $('<button class="gal_button"/>').on('click', function () {
-                        $(this).parent().animate({
-                            'opacity': '0',
-                            'width': '0px'
-                        }, 500, function () {
-                            libs.removeFromLocalStorage('imgList', $(this).index());
-
-                            $(this).remove();
-                        });
-                    });
-                    button.html('remove');
-                    li.html(imgName);
-                    let $img = $('<img />').attr('src', imgName);
-                    $img.attr('width', '80px');
-                    li.append($img);
-                    li.append(button);
-                    galList.append(li);
-                    libs.addToSessionStorage('imgList', imgName);
-
-
-                    galClose.trigger('click');
-
-                    galEnlarged.css({
-                        'background-color': 'transparent'
-                    }).animate({
-                        'left': galList.offset().left + 'px',
-                        'top': galList.offset().top + 'px',
-                        'width': galList.css('width')
-
-                    }, () => {
-                        galClose.trigger('click');
-                    });
-
-                }
-
-            });
+            }).on('touchend',(e)=>{
+					dragFinish(e,$(this));
+			}).on('dragend',(e)=>{
+				console.log(e);
+				
+			});
 
         $('body').on('mousemove', (e) => { /* if element is in drag state follow by mouse pointer*/
 
-            if (galEnlargedTop.data('msdown')) {
+			dragDuring(e,$(this));
 
-                let dX = e.pageX - galEnlargedTop.data('position').X,
-                    dY = e.pageY - galEnlargedTop.data('position').Y;
-                galEnlargedTop.data('position', {
-                    'X': e.pageX,
-                    'Y': e.pageY
-                });
-                // console.log(Math.sign(dX));
-                // console.log(Math.sign(dY));
-
-
-                $('.gal_enlarged')
-                    .animate({
-                        'left': '+=' + (dX + Math.sign(dX) * 0),
-                        'top': '+=' + (dY + Math.sign(dY) * 0)
-                    }, 15);
-
-                // .animate({
-                //     'left': '+=' + (-Math.sign(dX) * 1),
-                //     'top': '+=' + (-Math.sign(dY) * 1)
-                // }, 15)
-                // .animate({
-                //     'left': '+=' + (-Math.sign(dX) * 2),
-                //     'top': '+=' + (-Math.sign(dY) * 2)
-                // }, 15)
-                // .animate({
-                //     'left': '-=' + (Math.sign(dX) * 2),
-                //     'top': '-=' + (Math.sign(dY) * 2)
-                // });
-                // .animate({
-                //     'left': '-=' + (Math.sign(dX) * 2),
-                //     'top': '-=' + (Math.sign(dY) * 2)
-                // }, 15);
-
-
-                if (e.pageY > window.innerHeight - 50) {
-                    galList[0].scrollIntoView({
-                        behavior: 'smooth'
-                    });
-
-                }
-
-            }
-
-
-
-
-            e.stopPropagation();
-            e.bubbles = false;
-
-        });
+        }).on('touchmove',(e)=>{
+			
+			dragDuring(e,$(this));
+			
+		});
 
 
         let nrOfButtons = galButtons.length,
