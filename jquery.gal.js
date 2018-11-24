@@ -1,8 +1,15 @@
+let touchPlace = {
+    X: null, Y:null
+};
+
 function isOverTheList(e, galList) {
     'use strict';
-    return e.pageX >= galList.offset().left + parseInt(galList.css('padding-left'), 10) &&
-        e.pageX <= galList.offset().left + parseInt(galList.css('width'), 10) + parseInt(galList.css('padding-left'), 10) &&
-        e.pageY >= galList.offset().top && e.pageY <= galList.offset().top + parseInt(galList.css('height'), 10);
+ 
+    let ePageX = e.pageX || touchPlace.X;
+       let ePageY = e.pageY || touchPlace.Y;
+    return ePageX >= galList.offset().left + parseInt(galList.css('padding-left'), 10) &&
+        ePageX <= galList.offset().left + parseInt(galList.css('width'), 10) + parseInt(galList.css('padding-left'), 10) &&
+        ePageY >= galList.offset().top && ePageY <= galList.offset().top + parseInt(galList.css('height'), 10);
 }
 
 (function ($) {
@@ -13,16 +20,19 @@ function isOverTheList(e, galList) {
     
     let dragged = false;
     let viewPosition = 'top';
+    let dragDuring = {X:null, Y:null}
     
-    const dragPosition = {X:undefined,Y:undefined};
+
     $.fn.gal = function (options) {
 
-
+        
         let opt = {},
 
             galScene = this,
             $imgIt = null,
             open = null;
+
+
 
         libs.deepExt.apply(opt, [$.fn.gal.defaults]);
         libs.deepExt.apply(opt, [options]);
@@ -63,7 +73,7 @@ function isOverTheList(e, galList) {
       
                   dragDuring.X = ePageX;
                   dragDuring.Y = ePageY;
-      
+                
                 
                 $('.gal_enlarged')
                     .animate({
@@ -72,13 +82,31 @@ function isOverTheList(e, galList) {
                     }, 15);
 
 
-                if (ePageY > window.innerHeight - 50) {
-                    galList[0].scrollIntoView({
-                        behavior: 'smooth'
-                    });
 
-                }
 
+            }
+
+
+
+            if (ePageY > window.innerHeight - 50) {
+                galList[0].scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                setTimeout(()=>{
+                    $('html, body').css({overflow: 'hidden'});
+                },500);
+            }
+
+
+
+            if (ePageY < window.innerHeight + 50) {
+                
+//                console.log('top');
+                
+                setTimeout(()=>{
+                    $('html, body').css({overflow: 'auto'});
+                },500);
             }
 
             e.stopPropagation();
@@ -87,7 +115,7 @@ function isOverTheList(e, galList) {
 
 
         function dragFinish(e, $this) {
-			console.log('dragfinish');
+
             dragged = false;
             if (isOverTheList(e, galList) && $this.parent().find('.gal_maximize').attr('src') === 'img/gal_maximize.png') {
                 let imgName = $this.parent().find('.gal_img').attr('src'),
@@ -176,14 +204,18 @@ function isOverTheList(e, galList) {
 				dragStart(e,$(this));
 
             }).on('touchstart',(e)=>{
+
 				dragStart(e,$(this));
 			}).on('mouseup', function (e) { /* when left mouse button is released, remove drag state */
-				dragFinish(e, $(this));
+                
+                dragFinish(e, $(this));
+                
 
             
 
             }).on('touchend',(e)=>{
-					dragFinish(e,$(this));
+                
+                dragFinish(e,$(this));
 			}).on('dragend',(e)=>{
 				console.log(e);
 				
@@ -194,7 +226,8 @@ function isOverTheList(e, galList) {
 			dragDuring(e,$(this));
 
         }).on('touchmove',(e)=>{
-			
+            touchPlace.X = e.originalEvent.touches[0].pageX;
+            touchPlace.Y = e.originalEvent.touches[0].pageY;
 			dragDuring(e,$(this));
 			
 		});
