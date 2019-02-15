@@ -1,5 +1,6 @@
 # jquery.gallery.plugin
-
+# Preview of the developer version
+[jquery.gallery.plugin](http://frankyy.eu5.org/projects/jquery.gallery.plugin/)
 
 ## Instalation
 
